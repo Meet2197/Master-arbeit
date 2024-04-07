@@ -21,7 +21,7 @@ Clone the repository to your local machine:
 
 bash
 
-git clone https://github.com/your-username/dzif-data-quality-dashboard.git
+git clone https://github.com/Meetb2197/dzif-data-quality-dashboard.git
 
 Navigate to the project directory:
 
