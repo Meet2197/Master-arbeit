@@ -64,6 +64,6 @@ This project is licensed under the MIT License.
 
 
 We would like to thank the German Center for Infection Research (DZIF) and the Helmholtz Center Munich for their support and funding of this project.
-![csm_dzif_9f131d6954](https://github.com/Meet2197/Master-arbeit/assets/125220294/43e9e295-78b0-445f-9369-7fad026ee9ff) ![Helmholtz_Munich_Logo](https://github.com/Meet2197/Master-arbeit/assets/125220294/c61259f3-c304-4dae-8fee-5e8695f0f3cd)
+![csm_dzif_9f131d6954](https://github.com/Meet2197/Master-arbeit/assets/125220294/43e9e295-78b0-445f-9369-7fad026ee9ff) 
 
 
