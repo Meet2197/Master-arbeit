@@ -1,0 +1,4454 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title>Datenauswertung TxKohorte</title>
+
+<meta property="og:title" content="Datenauswertung TxKohorte" />
+
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+
+<link rel="icon" href="data:image/x-icon;" type="image/x-icon">
+
+
+<script type="text/javascript">
+window.FlexDashboardComponents = [];
+</script>
+
+<script src="frame_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="frame_files/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="frame_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="frame_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="frame_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="frame_files/stickytableheaders-0.1.19/jquery.stickytableheaders.min.js"></script>
+<script src="frame_files/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="frame_files/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="frame_files/typedarray-0.1/typedarray.min.js"></script>
+<link href="frame_files/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="frame_files/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="frame_files/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="frame_files/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<script src="frame_files/kePrint-0.0.1/kePrint.js"></script>
+<link href="frame_files/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+<link href="frame_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="frame_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<style type="text/css">
+
+/*
+ Dashboard CSS from Keen IO Dashboards
+ (https://github.com/keen/dashboards)
+*/
+
+body {
+  background: #f2f2f2;
+  padding: 60px 0 0 8px; /* padding-top overridden by theme */
+}
+
+body hr {
+  border-color: #d7d7d7;
+  margin: 10px 0;
+}
+
+.navbar-inverse .navbar-nav > li > a,
+.navbar .navbar-brand {
+  text-decoration: none;
+}
+
+.navbar-logo {
+  margin-top: 1px;
+}
+
+.navbar-logo img {
+  margin-right: 12px;
+}
+
+.navbar-author {
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+.navbar .dropdown-menu .fa {
+  min-width: 20px;
+}
+
+.navbar .dropdown-menu {
+  min-width: 150px;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.chart-wrapper,
+.nav-tabs-custom,
+.sbframe-commentary
+{
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  margin-right: 8px;
+}
+
+.chart-title {
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 7px 10px 4px;
+}
+
+.chart-wrapper .chart-title:empty {
+  display: none;
+}
+
+.chart-wrapper .chart-stage {
+  overflow: hidden;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.chart-wrapper .chart-notes {
+  background: #fbfbfb;
+  border-top: 1px solid #e2e2e2;
+  color: #808080;
+  font-size: 12px;
+  padding: 8px 10px 5px;
+}
+
+/*
+ CSS for handling flexbox layout
+*/
+
+#dashboard-container {
+  visibility: hidden;
+}
+
+.tab-content>.dashboard-page-wrapper.active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dashboard-page-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dashboard-row-orientation {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dashboard-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.dashboard-row-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.dashboard-column-orientation {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.dashboard-column {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chart-wrapper-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chart-stage-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  position: relative;
+}
+
+.chart-shim {
+  position: absolute;
+  left: 8px; top: 8px; right: 8px; bottom: 8px;
+}
+
+.no-padding .chart-shim {
+  left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.flowing-content-shim {
+  overflow: auto;
+  left: 0; top: 0; right: 0; bottom: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.flowing-content-container {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.chart-stage .table-bordered {
+  border: none;
+}
+
+.chart-stage .table-bordered > tbody > tr > th,
+.chart-stage .table-bordered > tfoot > tr > th,
+.chart-stage .table-bordered > tbody > tr > td,
+.chart-stage .table-bordered > tfoot > tr > td {
+  border: none;
+}
+
+.chart-stage .table-bordered > tbody > tr > td {
+  border-top: 1px solid #dddddd;
+}
+
+.chart-stage .table-bordered > thead > tr > th {
+  border: none;
+  border-bottom: 2px solid #dddddd;
+}
+
+.bootstrap-table table>thead {
+  background-color: #fff;
+}
+
+.bootstrap-table table.data,
+.bootstrap-table table.shiny-table {
+  width: inherit !important;
+}
+
+.bootstrap-table table.data>tbody>tr>th,
+.bootstrap-table table.shiny-table>tbody>tr>th {
+  border-top: none;
+  border-bottom: 2px solid #dddddd;
+  padding: 5px;
+}
+
+.bootstrap-table .data td[align=right] {
+  font-family: inherit;
+}
+
+.chart-wrapper form {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.shiny-input-container label {
+  font-weight: normal;
+}
+
+.chart-stage .html-widget {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-stage .html-widget-static-bound {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-stage .shiny-bound-output {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Omit display of empty paragraphs */
+
+.chart-shim>p:empty {
+  display: none;
+}
+
+.chart-stage>p:empty {
+  display: none;
+}
+
+/* Omit display of special knitr options div*/
+
+.chart-stage .knitr-options {
+  display: none;
+}
+
+/* Automatically resizing images */
+
+.image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.image-container img {
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* Value box */
+
+.value-box {
+  border-radius: 2px;
+  position: relative;
+  display: block;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.value-box > .inner {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.value-box .value {
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0 0 3px 0;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.value-box .caption {
+  font-size: 15px;
+}
+.value-box .caption > small {
+  display: block;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.value-box .icon i {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 80px;
+  color: rgba(0, 0, 0, 0.15);
+}
+
+.linked-value:hover {
+  cursor: pointer;
+}
+
+.value-box.linked-value:hover {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* STORYBOARD */
+
+.storyboard-nav button {
+  background: transparent;
+  border: 0;
+  opacity: .3;
+  outline: none;
+  padding: 0;
+}
+
+.storyboard-nav button:hover,
+.storyboard-nav button:hover {
+  opacity: .5;
+}
+
+.storyboard-nav button:disabled,
+.storyboard-nav button:disabled {
+  opacity: .1;
+}
+
+.storyboard-nav .sbnext,
+.storyboard-nav .sbprev {
+  float: left;
+  width: 2%;
+  height: 120px;
+  font-size: 50px;
+}
+
+.storyboard-nav .sbprev {
+  text-align: left;
+  width: 2%;
+}
+
+.storyboard-nav .sbnext {
+  float: right;
+  text-align: right;
+  margin-right: 8px;
+}
+
+.storyboard-nav .sbframelist {
+  margin: 0 auto;
+  width: 94%;
+  height: 120px;
+  overflow: hidden;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.storyboard-nav .sbframelist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.storyboard-nav .sbframelist ul li {
+  float: left;
+  width: 270px;
+  height: 100%;
+  padding: 10px 10px 10px 10px;
+  margin-right: 8px;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  color: #3a3c47;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.storyboard-nav .sbframelist ul li:last-child {
+  margin-right: 0px;
+}
+
+.storyboard-nav .sbframelist ul li.active {
+  color: #fff;
+  background: #B8B8B8;
+}
+
+.sbframe-commentary {
+  width: 300px;
+  background: #fbfbfb;
+  font-size: 14px;
+}
+
+.sbframe-commentary ul {
+  padding-left: 22px;
+}
+
+.sbframe.active {
+  display: flex;
+}
+
+.sbframe:not(.active) {
+  display: none;
+}
+
+/* NAV TABS */
+
+.nav-tabs-custom > .nav-tabs {
+  margin: 0;
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  font-size: 14px;
+  font-weight: 300;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+.nav-tabs-custom > .nav-tabs > li {
+  border-top: 3px solid transparent;
+  margin-bottom: -1px;
+  margin-right: 5px;
+}
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:active {
+  color: #666;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 0;
+  padding: 3px 10px 5px;
+  text-transform: none;
+}
+
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a {
+  border-bottom-color: transparent;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a.text-muted {
+  color: #999;
+}
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:hover {
+  background: transparent;
+  margin: 0;
+}
+.nav-tabs-custom > .nav-tabs > li > a:hover {
+  color: #999;
+}
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:hover,
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:focus,
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:active {
+  border-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: #3c8dbc;
+}
+.nav-tabs-custom > .nav-tabs > li.active > a,
+.nav-tabs-custom > .nav-tabs > li.active:hover > a {
+  background-color: #fff;
+  color: #666;
+}
+.nav-tabs-custom > .nav-tabs > li.active > a {
+  border-top-color: transparent;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+}
+.nav-tabs-custom > .nav-tabs > li:first-of-type {
+  margin-left: 0;
+}
+.nav-tabs-custom > .nav-tabs > li:first-of-type.active > a {
+  border-left-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs.pull-right {
+  float: none !important;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li {
+  float: right;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type {
+  margin-right: 0;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type > a {
+  border-left-width: 1px;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type.active > a {
+  border-left-color: #d7d7d7;
+  border-right-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs > li.header {
+  line-height: 35px;
+  padding: 0 10px;
+  font-size: 20px;
+  color: #666;
+}
+.nav-tabs-custom > .nav-tabs > li.header > .fa,
+.nav-tabs-custom > .nav-tabs > li.header > .glyphicon,
+.nav-tabs-custom > .nav-tabs > li.header > .ion {
+  margin-right: 5px;
+}
+.nav-tabs-custom > .tab-content {
+  background: #fff;
+  padding: 0;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav-tabs-custom > .tab-content > .chart-wrapper {
+  background: #fff;
+  border: none;
+  margin: 0;
+}
+
+
+.nav-tabs-custom > .tab-content > .active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav-tabs-custom .dropdown.open > a:active,
+.nav-tabs-custom .dropdown.open > a:focus {
+  background: transparent;
+  color: #999;
+}
+
+
+@media (max-width: 767px) {
+  .value-box {
+    text-align: center;
+    margin-right: 8px;
+  }
+  .value-box .icon {
+    display: none;
+  }
+}
+
+/* Fixed position sidebar */
+
+.section.sidebar {
+  position: fixed;
+  top: 51px; /* overridden by theme */
+  left: 0;
+  bottom: 0;
+  border-right: 1px solid #e2e2e2;
+  background-color: white; /* overridden by theme */
+  padding-left: 10px;
+  padding-right: 10px;
+  visibility: hidden;
+  overflow: auto;
+}
+
+.section.sidebar form p:first-child {
+  margin-top: 10px;
+}
+
+/* Embedded source code */
+
+#flexdashboard-source-code {
+  display: none;
+}
+
+.featherlight-content #flexdashboard-source-code {
+  display: inline-block;
+}
+
+.featherlight-content {
+  width: 80%;
+  max-width: 800px;
+  padding: 0 !important;
+  border-bottom: none !important;
+}
+
+.featherlight:last-of-type {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.featherlight-inner {
+  width: 100%;
+}
+
+.featherlight-content pre {
+  margin: 0;
+  border: 0;
+  background: #fff;
+  font-size: 12px;
+}
+
+.unselectable {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+#flexdashboard-source-code code {
+  -ms-user-select: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -o-user-select: text;
+  user-select: text;
+}
+
+/* DataTables Tweaks */
+
+.dataTables_filter input[type="search"] {
+  -webkit-appearance: searchfield;
+  outline: none;
+}
+
+.dataTables_wrapper.no-footer
+.dataTables_info {
+  padding-top: 0;
+}
+
+
+table.dataTable thead th {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+/* Mobile phone only CSS */
+
+.desktop-layout div.section.mobile {
+  display: none;
+}
+
+.mobile-layout div.section.no-mobile {
+  display: none;
+}
+
+.mobile-figure {
+  display: none;
+}
+
+
+
+body {
+  padding-top: 60px;
+}
+
+.section.sidebar {
+  top: 51px;
+  background-color: rgba(39, 128, 227, 0.1);
+}
+
+.value-box {
+  color: #f9f9f9;
+}
+
+.bg-primary {
+  background-color: rgba(39, 128, 227, 0.7);
+}
+
+.storyboard-nav .sbframelist ul li.active {
+  background-color: rgba(39, 128, 227, 0.7);
+}
+
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: rgba(39, 128, 227, 0.7);
+}
+
+.bg-info {
+  background-color: rgba(153, 84, 187, 0.7);
+}
+
+.bg-warning {
+  background-color: rgba(255, 117, 24, 0.7);
+}
+
+.bg-danger {
+  background-color: rgba(255, 0, 57, 0.7);
+}
+
+.bg-success {
+  background-color: rgba(63, 182, 24, 0.7);
+}
+
+.chart-title {
+  font-weight: 500;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:active {
+  font-weight: 500;
+}
+
+@media only screen and (min-width: 768px) {
+html, body {
+  height: 100%;
+}
+
+#dashboard-container {
+  height: 100%;
+}
+}
+</style>
+
+
+
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="container-fluid">
+<div class="navbar-header">
+
+<button id="navbar-button" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+
+<span class="navbar-logo pull-left">
+  <img src="logo\hzi3.png" class="navbar-logo"/>
+</span>
+<span class="navbar-brand">
+  Datenauswertung TxKohorte
+  <span class="navbar-author">
+      23.06.2020
+      </span>
+</span>
+
+</div>
+<div id="navbar" class="navbar-collapse collapse">
+<ul class="nav navbar-nav navbar-left">
+</ul>
+<ul class="nav navbar-nav navbar-right">
+</ul>
+</div><!--/.nav-collapse-->
+</div><!--/.container-->
+</div><!--/.navbar-->
+
+<script type="text/javascript">
+
+
+var FlexDashboard = (function () {
+
+  // initialize options
+  var _options = {};
+
+  var FlexDashboard = function() {
+
+    // default options
+    _options = $.extend(_options, {
+      theme: "cosmo",
+      fillPage: false,
+      orientation: 'columns',
+      storyboard: false,
+      defaultFigWidth: 576,
+      defaultFigHeight: 461,
+      defaultFigWidthMobile: 360,
+      defaultFigHeightMobile: 461,
+      isMobile: false,
+      isPortrait: false
+    });
+  };
+
+  function init(options) {
+
+    // extend default options
+    $.extend(true, _options, options);
+
+    // add ids to sections that don't have them (pandoc won't assign ids
+    // to e.g. sections with titles consisting of only chinese characters)
+    var nextId = 1;
+    $('.level1:not([id]),.level2:not([id]),.level3:not([id])').each(function() {
+      $(this).attr('id', 'dashboard-' + nextId++);
+    });
+
+    // find navbar items
+    var navbarItems = $('#flexdashboard-navbar');
+    if (navbarItems.length)
+      navbarItems = JSON.parse(navbarItems.html());
+    addNavbarItems(navbarItems);
+
+    // find the main dashboard container
+    var dashboardContainer = $('#dashboard-container');
+
+    // resolve mobile classes
+    resolveMobileClasses(dashboardContainer);
+
+    // one time global initialization for components
+    componentsInit(dashboardContainer);
+
+    // look for a global sidebar
+    var globalSidebar = dashboardContainer.find(".section.level1.sidebar");
+    if (globalSidebar.length > 0) {
+
+      // global layout for fullscreen displays
+      if (!isMobilePhone()) {
+
+         // hoist it up to the top level
+         globalSidebar.insertBefore(dashboardContainer);
+
+         // lay it out (set width/positions)
+         layoutSidebar(globalSidebar, dashboardContainer);
+
+      // tuck sidebar into first page for mobile phones
+      } else {
+
+        // convert it into a level3 section
+        globalSidebar.removeClass('sidebar');
+        globalSidebar.removeClass('level1');
+        globalSidebar.addClass('level3');
+        var h1 = globalSidebar.children('h1');
+        var h3 = $('<h3></h3>');
+        h3.html(h1.html());
+        h3.insertBefore(h1);
+        h1.remove();
+
+        // move it into the first page
+        var page = dashboardContainer.find('.section.level1').first();
+        if (page.length > 0)
+          page.prepend(globalSidebar);
+      }
+    }
+
+    // look for pages to layout
+    var pages = $('div.section.level1');
+    if (pages.length > 0) {
+
+        // find the navbar and collapse on clicked
+        var navbar = $('#navbar');
+        navbar.on("click", "a[data-toggle!=dropdown]", null, function () {
+           navbar.collapse('hide');
+        });
+
+        // envelop the dashboard container in a tab content div
+        dashboardContainer.wrapInner('<div class="tab-content"></div>');
+
+        pages.each(function(index) {
+
+          // lay it out
+          layoutDashboardPage($(this));
+
+          // add it to the navbar
+          addToNavbar($(this), index === 0);
+
+        });
+
+    } else {
+
+      // remove the navbar and navbar button if we don't
+      // have any navbuttons
+      if (navbarItems.length === 0) {
+        $('#navbar').remove();
+        $('#navbar-button').remove();
+      }
+
+      // add the storyboard class if requested
+      if (_options.storyboard)
+        dashboardContainer.addClass('storyboard');
+
+      // layout the entire page
+      layoutDashboardPage(dashboardContainer);
+    }
+
+    // if we are in shiny we need to trigger a window resize event to
+    // force correct layout of shiny-bound-output elements
+    if (isShinyDoc())
+      $(window).trigger('resize');
+
+    // make main components visible
+    $('.section.sidebar').css('visibility', 'visible');
+    dashboardContainer.css('visibility', 'visible');
+
+    // handle location hash
+    handleLocationHash();
+
+    // intialize prism highlighting
+    initPrismHighlighting();
+
+    // record mobile and orientation state then register a handler
+    // to refresh if it changes
+    _options.isMobile = isMobilePhone();
+    _options.isPortrait = isPortrait();
+    $(window).on('resize', function() {
+      if (_options.isMobile !== isMobilePhone() ||
+          _options.isPortrait !== isPortrait()) {
+        window.location.reload();
+      }
+    });
+
+    // trigger layoutcomplete event
+    dashboardContainer.trigger('flexdashboard:layoutcomplete');
+  }
+
+  function resolveMobileClasses(dashboardContainer) {
+     // add top level layout class
+    dashboardContainer.addClass(isMobilePhone() ? 'mobile-layout' :
+                                                  'desktop-layout');
+
+    // look for .mobile sections and add .no-mobile to their peers
+    var mobileSections = $('.section.mobile');
+    mobileSections.each(function() {
+       var id = $(this).attr('id');
+       var nomobileId = id.replace(/-\d+$/, '');
+       $('#' + nomobileId).addClass('no-mobile');
+    });
+  }
+
+  function addNavbarItems(navbarItems) {
+
+    var navbarLeft = $('ul.navbar-left');
+    var navbarRight = $('ul.navbar-right');
+
+    for (var i = 0; i<navbarItems.length; i++) {
+
+      // get the item
+      var item = navbarItems[i];
+
+      // determine the container
+      var container = null;
+      if (item.align === "left")
+        container = navbarLeft;
+      else
+        container = navbarRight;
+
+      // navbar menu if we have multiple items
+      if (item.items) {
+        var menu = navbarMenu(null, item.icon, item.title, container);
+        for (var j = 0; j<item.items.length; j++) {
+          var subItem = item.items[j];
+          var li = $('<li></li>');
+          li.append(navbarLink(subItem.icon, subItem.title, subItem.href, subItem.target));
+          menu.append(li);
+        }
+      } else {
+        var li = $('<li></li>');
+        li.append(navbarLink(item.icon, item.title, item.href, item.target));
+        container.append(li);
+      }
+    }
+  }
+
+  // create or get a reference to an existing dropdown menu
+  function navbarMenu(id, icon, title, container) {
+    var existingMenu = [];
+    if (id)
+      existingMenu = container.children('#' + id);
+    if (existingMenu.length > 0) {
+      return existingMenu.children('ul');
+    } else {
+      var li = $('<li></li>');
+      if (id)
+        li.attr('id', id);
+      li.addClass('dropdown');
+      // auto add "Share" title on mobile if necessary
+      if (!title && icon && (icon === "fa-share-alt") && isMobilePhone())
+        title = "Share";
+      if (title) {
+        title = title + ' <span class="caret"></span>';
+      }
+      var a = navbarLink(icon, title, "#");
+      a.addClass('dropdown-toggle');
+      a.attr('data-toggle', 'dropdown');
+      a.attr('role', 'button');
+      a.attr('aria-expanded', 'false');
+      li.append(a);
+      var ul = $('<ul class="dropdown-menu"></ul>');
+      ul.attr('role', 'menu');
+      li.append(ul);
+      container.append(li);
+      return ul;
+    }
+  }
+
+  function addToNavbar(page, active) {
+
+    // capture the id and data-icon attribute (if any)
+    var id = page.attr('id');
+    var icon = page.attr('data-icon');
+    var navmenu = page.attr('data-navmenu');
+
+    // get hidden state (transfer this to navbar)
+    var hidden = page.hasClass('hidden');
+    page.removeClass('hidden');
+
+    // sanitize the id for use with bootstrap tabs
+    id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+    page.attr('id', id);
+
+    // get the wrapper
+    var wrapper = page.closest('.dashboard-page-wrapper');
+
+    // move the id to the wrapper
+    page.removeAttr('id');
+    wrapper.attr('id', id);
+
+    // add the tab-pane class to the wrapper
+    wrapper.addClass('tab-pane');
+    if (active)
+      wrapper.addClass('active');
+
+    // get a reference to the h1, discover it's id and title, then remove it
+    var h1 = wrapper.find('h1').first();
+    var title = h1.html();
+    h1.remove();
+
+    // create a navbar item
+    var li = $('<li></li>');
+    var a = navbarLink(icon, title, '#' + id);
+    a.attr('data-toggle', 'tab');
+    li.append(a);
+
+    // add it to the navbar (or navbar menu if specified)
+    var container = $('ul.navbar-left');
+    if (navmenu) {
+      var menuId = navmenu.replace(/\s+/g, '');
+      var menu = navbarMenu(menuId, null, navmenu, container);
+      menu.append(li);
+    } else {
+      container.append(li);
+    }
+
+    // hide it if requested
+    if (hidden)
+      li.addClass('hidden');
+  }
+
+  function navbarLink(icon, title, href, target) {
+
+    var a = $('<a></a>');
+    if (icon) {
+
+      // get the name of the icon set and icon
+      var dashPos = icon.indexOf("-");
+      var iconSet = icon.substring(0, dashPos);
+      var iconName = icon.substring(dashPos + 1);
+
+      // create the icon
+      var iconElement = $('<span class="' + iconSet + ' ' + icon + '"></span>');
+      if (title)
+        iconElement.css('margin-right', '7px');
+      a.append(iconElement);
+      // if href is null see if we can auto-generate based on icon (e.g. social)
+      if (!href)
+        maybeGenerateLinkFromIcon(iconName, a);
+    }
+    if (title)
+      a.append(title);
+
+    // add the href.
+    if (href) {
+      if (href === "source_embed") {
+        a.attr('href', '#');
+        a.attr('data-featherlight', "#flexdashboard-source-code");
+        a.featherlight({
+            beforeOpen: function(event){
+              $('body').addClass('unselectable');
+            },
+            afterClose: function(event){
+              $('body').removeClass('unselectable');
+            }
+        });
+      } else {
+        a.attr('href', href);
+      }
+    }
+
+    // add the arget
+    if (target)
+      a.attr('target', target);
+
+    return a;
+  }
+
+  // auto generate a link from an icon name (e.g. twitter) when possible
+  function maybeGenerateLinkFromIcon(iconName, a) {
+
+     var serviceLinks = {
+      "twitter": "https://twitter.com/share?text=" + encodeURIComponent(document.title) + "&url="+encodeURIComponent(location.href),
+      "facebook": "https://www.facebook.com/sharer/sharer.php?s=100&p[url]="+encodeURIComponent(location.href),
+      "google-plus": "https://plus.google.com/share?url="+encodeURIComponent(location.href),
+      "linkedin": "https://www.linkedin.com/shareArticle?mini=true&url="+encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title),
+      "pinterest": "https://pinterest.com/pin/create/link/?url="+encodeURIComponent(location.href) + "&description=" + encodeURIComponent(document.title)
+    };
+
+    var makeSocialLink = function(a, href) {
+      a.attr('href', '#');
+      a.on('click', function(e) {
+        e.preventDefault();
+        window.open(href);
+      });
+    };
+
+    $.each(serviceLinks, function(key, value) {
+      if (iconName.indexOf(key) !== -1)
+        makeSocialLink(a, value);
+    });
+  }
+
+  // layout a dashboard page
+  function layoutDashboardPage(page) {
+
+    // use a page wrapper so that free form content above the
+    // dashboard appears at the top rather than the side (as it
+    // would without the wrapper in a column orientation)
+    var wrapper = $('<div class="dashboard-page-wrapper"></div>');
+    page.wrap(wrapper);
+
+    // if there are no level2 or level3 headers synthesize a level3
+    // header to contain the (e.g. frame it, scroll container, etc.)
+    var headers = page.find('h2,h3');
+    if (headers.length === 0)
+      page.wrapInner('<div class="section level3"></div>');
+
+    // hoist up any content before level 2 or level 3 headers
+    var children = page.children();
+    children.each(function(index) {
+      if ($(this).hasClass('level2') || $(this).hasClass('level3'))
+        return false;
+      $(this).insertBefore(page);
+    });
+
+    // determine orientation and fillPage behavior for distinct media
+    var orientation, fillPage, storyboard;
+
+    // media: mobile phone
+    if (isMobilePhone()) {
+
+      // if there is a sidebar we need to ensure it's content
+      // is properly framed as an h3
+      var sidebar = page.find('.section.sidebar');
+      sidebar.removeClass('sidebar');
+      sidebar.wrapInner('<div class="section level3"></div>');
+      var h2 = sidebar.find('h2');
+      var h3 = $('<h3></h3>');
+      h3.html(h2.html());
+      h3.insertBefore(h2);
+      h2.remove();
+
+      // wipeout h2 elements then enclose them in a single h2
+      var level2 = page.find('div.section.level2');
+      level2.each(function() {
+        level2.children('h2').remove();
+        level2.children().unwrap();
+      });
+      page.wrapInner('<div class="section level2"></div>');
+
+      // substitute mobile images
+      if (isPortrait()) {
+        var mobileFigures = $('img.mobile-figure');
+        mobileFigures.each(function() {
+          // get the src (might be base64 encoded)
+          var src = $(this).attr('src');
+
+          // find it's peer
+          var id = $(this).attr('data-mobile-figure-id');
+          var img = $('img[data-figure-id=' + id + "]");
+          img.attr('src', src)
+             .attr('width', _options.defaultFigWidthMobile)
+             .attr('height', _options.defaultFigHeightMobile);
+        });
+      }
+
+      // hoist storyboard commentary into it's own section
+      if (page.hasClass('storyboard')) {
+        var commentaryHR = page.find('div.section.level3 hr');
+        commentaryHR.each(function() {
+          var commentary = $(this).nextAll().detach();
+          var commentarySection = $('<div class="section level3"></div>');
+          commentarySection.append(commentary);
+          commentarySection.insertAfter($(this).closest('div.section.level3'));
+          $(this).remove();
+        });
+      }
+
+      // force a non full screen layout by columns
+      orientation = _options.orientation = 'columns';
+      fillPage = _options.fillPage = false;
+      storyboard = _options.storyboard = false;
+
+    // media: desktop
+    } else {
+
+      // determine orientation
+      orientation = page.attr('data-orientation');
+      if (orientation !== 'rows' && orientation != 'columns')
+        orientation = _options.orientation;
+
+      // determine storyboard mode
+      storyboard = page.hasClass('storyboard');
+
+      // fillPage based on options (force for storyboard)
+      fillPage = _options.fillPage || storyboard;
+
+      // handle sidebar
+      var sidebar = page.find('.section.level2.sidebar');
+      if (sidebar.length > 0)
+        layoutSidebar(sidebar, page);
+    }
+
+    // give it and it's parent divs height: 100% if we are in fillPage mode
+    if (fillPage) {
+      page.addClass('vertical-layout-fill');
+      page.css('height', '100%');
+      page.parents('div').css('height', '100%');
+    } else {
+      page.addClass('vertical-layout-scroll');
+    }
+
+    // perform the layout
+    if (storyboard)
+      layoutPageAsStoryboard(page);
+    else if (orientation === 'rows')
+      layoutPageByRows(page, fillPage);
+    else if (orientation === 'columns')
+      layoutPageByColumns(page, fillPage);
+  }
+
+  function layoutSidebar(sidebar, content) {
+
+    // get it out of the header hierarchy
+    sidebar = sidebar.first();
+    if (sidebar.hasClass('level1')) {
+      sidebar.removeClass('level1');
+      sidebar.children('h1').remove();
+    } else if (sidebar.hasClass('level2')) {
+      sidebar.removeClass('level2');
+      sidebar.children('h2').remove();
+    }
+
+    // determine width
+    var sidebarWidth = isTablet() ? 220 : 250;
+    var dataWidth = parseInt(sidebar.attr('data-width'));
+    if (dataWidth)
+      sidebarWidth = dataWidth;
+
+    // set the width and shift the page right to accomodate the sidebar
+    sidebar.css('width', sidebarWidth + 'px');
+    content.css('padding-left', sidebarWidth + 'px');
+
+    // wrap it's contents in a form
+    sidebar.wrapInner($('<form></form>'));
+  }
+
+  function layoutPageAsStoryboard(page) {
+
+    // create storyboard navigation
+    var nav = $('<div class="storyboard-nav"></div>');
+
+    // add navigation buttons
+    var prev = $('<button class="sbprev"><i class="fa fa-angle-left"></i></button>');
+    nav.append(prev);
+    var next= $('<button class="sbnext"><i class="fa fa-angle-right"></i></button>');
+    nav.append(next);
+
+    // add navigation frame
+    var frameList = $('<div class="sbframelist"></div>');
+    nav.append(frameList);
+    var ul = $('<ul></ul>');
+    frameList.append(ul);
+
+     // find all the level3 sections (those are the storyboard frames)
+    var frames = page.find('div.section.level3');
+    frames.each(function() {
+
+      // mark it
+      $(this).addClass('sbframe');
+
+      // divide it into chart content and (optional) commentary
+      $(this).addClass('dashboard-column-orientation');
+
+      // stuff the chart into it's own div w/ flex
+      $(this).wrapInner('<div class="sbframe-component"></div>');
+      setFlex($(this), 1);
+      var frame = $(this).children('.sbframe-component');
+
+      // extract the title from the h3
+      var li = $('<li></li>');
+      var h3 = frame.children('h3');
+      li.html(h3.html());
+      h3.remove();
+      ul.append(li);
+
+      // extract commentary
+      var hr = frame.children('hr');
+      if (hr.length) {
+        var commentary = hr.nextAll().detach();
+        hr.remove();
+        var commentaryFrame = $('<div class="sbframe-commentary"></div>');
+        commentaryFrame.addClass('flowing-content-shim');
+        commentaryFrame.addClass('flowing-content-container');
+        commentaryFrame.append(commentary);
+        $(this).append(commentaryFrame);
+
+        // look for a data-commentary-width attribute
+        var commentaryWidth = $(this).attr('data-commentary-width');
+        if (commentaryWidth)
+          commentaryFrame.css('width', commentaryWidth + 'px');
+      }
+
+      // layout the chart (force flex)
+      var result = layoutChart(frame, true);
+
+      // ice the notes if there are none
+      if (!result.notes)
+        frame.find('.chart-notes').remove();
+
+      // set flex on chart
+      setFlex(frame, 1);
+    });
+
+    // create a div to hold all the frames
+    var frameContent = $('<div class="sbframe-content"></div>');
+    frameContent.addClass('dashboard-row-orientation');
+    frameContent.append(frames.detach());
+
+    // row orientation to stack nav and frame content
+    page.addClass('dashboard-row-orientation');
+    page.append(nav);
+    page.append(frameContent);
+    setFlex(frameContent, 1);
+
+    // initialize sly
+    var sly = new Sly(frameList, {
+    		horizontal: true,
+    		itemNav: 'basic',
+    		smart: true,
+    		activateOn: 'click',
+    		startAt: 0,
+    		scrollBy: 1,
+    		activatePageOn: 'click',
+    		speed: 200,
+    		moveBy: 600,
+    		dragHandle: true,
+    		dynamicHandle: true,
+    		clickBar: true,
+    		keyboardNavBy: 'items',
+    		next: next,
+    		prev: prev
+    	}).init();
+
+    // make first frame active
+    frames.removeClass('active');
+    frames.first().addClass('active');
+
+    // subscribe to frame changed events
+    sly.on('active', function (eventName, itemIndex) {
+      frames.removeClass('active');
+      frames.eq(itemIndex).addClass('active')
+                          .trigger('shown');
+    });
+  }
+
+  function layoutPageByRows(page, fillPage) {
+
+    // row orientation
+    page.addClass('dashboard-row-orientation');
+
+    // find all the level2 sections (those are the rows)
+    var rows = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (rows.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      rows = page.find('div.section.level2');
+    }
+
+    rows.each(function () {
+
+      // flags
+      var haveNotes = false;
+      var haveFlexHeight = true;
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // give it row layout semantics if it's not a tabset
+      if (!isTabset)
+        $(this).addClass('dashboard-row');
+
+      // find all of the level 3 subheads
+      var columns = $(this).find('div.section.level3');
+
+      // determine figureSizes sizes
+      var figureSizes = chartFigureSizes(columns);
+
+      // fixup the columns
+      columns.each(function(index) {
+
+        // layout the chart (force flex if we are in a tabset)
+        var result = layoutChart($(this), isTabset);
+
+        // update flexHeight state
+        if (!result.flex)
+          haveFlexHeight = false;
+
+        // update state
+        if (result.notes)
+          haveNotes = true;
+
+        // set the column flex based on the figure width
+        // (value boxes will just get the default figure width)
+        var chartWidth = figureSizes[index].width;
+        setFlex($(this), chartWidth + ' ' + chartWidth + ' 0px');
+
+      });
+
+      // remove empty chart note divs
+      if (isTabset)
+        $(this).find('.chart-notes').filter(function() {
+            return $(this).html() === "&nbsp;";
+        }).remove();
+      if (!haveNotes)
+        $(this).find('.chart-notes').remove();
+
+       // make it a flexbox row
+      if (haveFlexHeight)
+        $(this).addClass('dashboard-row-flex');
+
+      // now we can set the height on all the wrappers (based on maximum
+      // figure height + room for title and notes, or data-height on the
+      // container if specified). However, don't do this if there is
+      // no flex on any of the constituent columns
+      var flexHeight = null;
+      var dataHeight = parseInt($(this).attr('data-height'));
+      if (dataHeight)
+        flexHeight = adjustedHeight(dataHeight, columns.first());
+      else if (haveFlexHeight)
+        flexHeight = maxChartHeight(figureSizes, columns);
+      if (flexHeight) {
+        if (fillPage)
+          setFlex($(this), flexHeight + ' ' + flexHeight + ' 0px');
+        else {
+          $(this).css('height', flexHeight + 'px');
+          setFlex($(this), '0 0 ' + flexHeight + 'px');
+        }
+      }
+
+    });
+  }
+
+  function layoutPageByColumns(page, fillPage) {
+
+    // column orientation
+    page.addClass('dashboard-column-orientation');
+
+    // find all the level2 sections (those are the columns)
+    var columns = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (columns.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      columns = page.find('div.section.level2');
+    }
+
+    // layout each column
+    columns.each(function (index) {
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // make it a flexbox column
+      $(this).addClass('dashboard-column');
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // find all the h3 elements
+      var rows = $(this).find('div.section.level3');
+
+      // get the figure sizes for the rows
+      var figureSizes = chartFigureSizes(rows);
+
+      // column flex is the max row width (or data-width if specified)
+      var flexWidth;
+      var dataWidth = parseInt($(this).attr('data-width'));
+      if (dataWidth)
+        flexWidth = dataWidth;
+      else
+        flexWidth = maxChartWidth(figureSizes);
+      setFlex($(this), flexWidth + ' ' + flexWidth + ' 0px');
+
+      // layout each chart
+      rows.each(function(index) {
+
+        // perform the layout
+        var result = layoutChart($(this), false);
+
+        // ice the notes if there are none
+        if (!result.notes)
+          $(this).find('.chart-notes').remove();
+
+        // set flex height based on figHeight, then adjust
+        if (result.flex) {
+          var chartHeight = figureSizes[index].height;
+          chartHeight = adjustedHeight(chartHeight, $(this));
+          if (fillPage)
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' 0px');
+          else {
+            $(this).css('height', chartHeight + 'px');
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' ' + chartHeight + 'px');
+          }
+        }
+      });
+    });
+  }
+
+  function chartFigureSizes(charts) {
+
+    // sizes
+    var figureSizes = new Array(charts.length);
+
+    // check each chart
+    charts.each(function(index) {
+
+      // start with default
+      figureSizes[index] = {
+        width: _options.defaultFigWidth,
+        height: _options.defaultFigHeight
+      };
+
+      // look for data-height or data-width then knit options
+      var dataWidth = parseInt($(this).attr('data-width'));
+      var dataHeight = parseInt($(this).attr('data-height'));
+      var knitrOptions = $(this).find('.knitr-options:first');
+      var knitrWidth, knitrHeight;
+      if (knitrOptions) {
+        knitrWidth = parseInt(knitrOptions.attr('data-fig-width'));
+        knitrHeight =  parseInt(knitrOptions.attr('data-fig-height'));
+      }
+
+      // width
+      if (dataWidth)
+        figureSizes[index].width = dataWidth;
+      else if (knitrWidth)
+        figureSizes[index].width = knitrWidth;
+
+      // height
+      if (dataHeight)
+        figureSizes[index].height = dataHeight;
+      else if (knitrHeight)
+        figureSizes[index].height = knitrHeight;
+    });
+
+    // return sizes
+    return figureSizes;
+  }
+
+  function maxChartHeight(figureSizes, charts) {
+
+    // first compute the maximum height
+    var maxHeight = _options.defaultFigHeight;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].height > maxHeight)
+        maxHeight = figureSizes[i].height;
+
+    // now add offests for chart title and chart notes
+    if (charts.length)
+      maxHeight = adjustedHeight(maxHeight, charts.first());
+
+    return maxHeight;
+  }
+
+  function adjustedHeight(height, chart) {
+    if (chart.length > 0) {
+      var chartTitle = chart.find('.chart-title');
+      if (chartTitle.length)
+        height += chartTitle.first().outerHeight();
+      var chartNotes = chart.find('.chart-notes');
+      if (chartNotes.length)
+        height += chartNotes.first().outerHeight();
+    }
+    return height;
+  }
+
+  function maxChartWidth(figureSizes) {
+    var maxWidth = _options.defaultFigWidth;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].width > maxWidth)
+        maxWidth = figureSizes[i].width;
+    return maxWidth;
+  }
+
+  // layout a chart
+  function layoutChart(chart, forceFlex) {
+
+    // state to return
+    var result = {
+      notes: false,
+      flex: false
+    };
+
+    // extract the title
+    var title = extractTitle(chart);
+
+    // find components that apply to this container
+    var components = componentsFind(chart);
+
+    // if it's a custom component then call it and return
+    var customComponents = componentsCustom(components);
+    if (customComponents.length) {
+      componentsLayout(customComponents, title, chart);
+      result.notes = false;
+      result.flex = forceFlex || componentsFlex(customComponents);
+      return result;
+    }
+
+    // put all the content in a chart wrapper div
+    chart.addClass('chart-wrapper');
+    chart.wrapInner('<div class="chart-stage"></div>');
+    var chartContent = chart.children('.chart-stage');
+
+    // flex the content if appropriate
+    result.flex = forceFlex || componentsFlex(components);
+    if (result.flex) {
+      // add flex classes
+      chart.addClass('chart-wrapper-flex');
+      chartContent.addClass('chart-stage-flex');
+
+      // additional shim to break out of flexbox sizing
+      chartContent.wrapInner('<div class="chart-shim"></div>');
+      chartContent = chartContent.children('.chart-shim');
+    }
+
+    // set custom data-padding attribute
+    var pad = chart.attr('data-padding');
+    if (pad) {
+      if (pad === "0")
+        chart.addClass('no-padding');
+      else {
+        pad = pad + 'px';
+        chartContent.css('left', pad)
+                    .css('top', pad)
+                    .css('right', pad)
+                    .css('bottom', pad)
+      }
+    }
+
+    // call compoents
+    componentsLayout(components, title, chartContent);
+
+    // also activate components on shiny output
+    findShinyOutput(chartContent).on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+
+          // see if we opted out of flex based on our output (for shiny
+          // we can't tell what type of output we have until after the
+          // value is bound)
+          var components = componentsFind(element);
+          var flex = forceFlex || componentsFlex(components);
+          if (!flex) {
+            chart.css('height', "");
+            setFlex(chart, "");
+            chart.removeClass('chart-wrapper-flex');
+            chartContent.removeClass('chart-stage-flex');
+            chartContent.children().unwrap();
+          }
+
+          // perform layout
+          componentsLayout(components, title, element.parent());
+        }, 10);
+      });
+
+    // add the title
+    var chartTitle = $('<div class="chart-title"></div>');
+    chartTitle.html(title);
+    chart.prepend(chartTitle);
+
+    // add the notes section
+    var chartNotes = $('<div class="chart-notes"></div>');
+    chartNotes.html('&nbsp;');
+    chart.append(chartNotes);
+
+    // attempt to extract notes if we have a component
+    if (components.length)
+      result.notes = extractChartNotes(chartContent, chartNotes);
+
+    // return result
+    return result;
+  }
+
+  // build a tabset from a section div with the .tabset class
+  function layoutTabset(tabset) {
+
+    // check for fade option
+    var fade = tabset.hasClass("tabset-fade");
+    var navClass = "nav-tabs";
+
+    // determine the heading level of the tabset and tabs
+    var match = tabset.attr('class').match(/level(\d) /);
+    if (match === null)
+      return;
+    var tabsetLevel = Number(match[1]);
+    var tabLevel = tabsetLevel + 1;
+
+    // find all subheadings immediately below
+    var tabs = tabset.find("div.section.level" + tabLevel);
+    if (!tabs.length)
+      return;
+
+    // create tablist and tab-content elements
+    var tabList = $('<ul class="nav ' + navClass + '" role="tablist"></ul>');
+    $(tabs[0]).before(tabList);
+    var tabContent = $('<div class="tab-content"></div>');
+    $(tabs[0]).before(tabContent);
+
+    // build the tabset
+    tabs.each(function(i) {
+
+      // get the tab div
+      var tab = $(tabs[i]);
+
+      // get the id then sanitize it for use with bootstrap tabs
+      var id = tab.attr('id');
+
+      // sanitize the id for use with bootstrap tabs
+      id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+      tab.attr('id', id);
+
+      // get the heading element within it and grab it's text
+      var heading = tab.find('h' + tabLevel + ':first');
+      var headingText = heading.html();
+
+      // build and append the tab list item
+      var a = $('<a role="tab" data-toggle="tab">' + headingText + '</a>');
+      a.attr('href', '#' + id);
+      a.attr('aria-controls', id);
+      var li = $('<li role="presentation"></li>');
+      li.append(a);
+      if (i === 0)
+        li.attr('class', 'active');
+      tabList.append(li);
+
+      // set it's attributes
+      tab.attr('role', 'tabpanel');
+      tab.addClass('tab-pane');
+      tab.addClass('tabbed-pane');
+      tab.addClass('no-title');
+      if (fade)
+        tab.addClass('fade');
+      if (i === 0) {
+        tab.addClass('active');
+        if (fade)
+          tab.addClass('in');
+      }
+
+      // move it into the tab content div
+      tab.detach().appendTo(tabContent);
+    });
+
+    // add nav-tabs-custom
+    tabset.addClass('nav-tabs-custom');
+
+    // internal layout is dashboard-column with tab-content flexing
+    tabset.addClass('dashboard-column');
+    setFlex(tabContent, 1);
+  }
+
+  // one time global initialization for components
+  function componentsInit(dashboardContainer) {
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.init)
+        component.init(dashboardContainer);
+    }
+  }
+
+  // find components that apply within a container
+  function componentsFind(container) {
+
+    // look for components
+    var components = [];
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.find(container).length)
+        components.push(component);
+    }
+
+    // if there were none then use a special flowing content component
+    // that just adds a scrollbar in fillPage mode
+    if (components.length == 0) {
+      components.push({
+        find: function(container) {
+          return container;
+        },
+
+        flex: function(fillPage) {
+          return fillPage;
+        },
+
+        layout: function(title, container, element, fillPage) {
+          if (fillPage) {
+            container.addClass('flowing-content-shim');
+            container.addClass('flowing-content-container');
+          }
+        }
+      });
+    }
+
+    return components;
+  }
+
+  // if there is a custom component then pick it out
+  function componentsCustom(components) {
+    var customComponent = [];
+    for (var i=0; i<components.length; i++)
+      if (components[i].type === "custom") {
+        customComponent.push(components[i]);
+        break;
+      }
+    return customComponent;
+  }
+
+  // query all components for flex
+  function componentsFlex(components) {
+
+    // no components at all means no flex
+    if (components.length === 0)
+      return false;
+
+    // otherwise query components (assume true unless we see false)
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++)
+      if (components[i].flex && !components[i].flex(_options.fillPage))
+        return false;
+    return true;
+  }
+
+  // layout all components
+  function componentsLayout(components, title, container) {
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++) {
+      var element = components[i].find(container);
+      if (components[i].layout) {
+        // call layout (don't call other components if it returns false)
+        var result = components[i].layout(title, container, element, _options.fillPage);
+        if (result === false)
+          return;
+      }
+    }
+  }
+
+  // get a reference to the h3, discover it's inner html, and remove it
+  function extractTitle(container) {
+    var h3 = container.children('h3').first();
+    var title = '';
+    if (!container.hasClass('no-title'))
+      title = h3.html();
+    h3.remove();
+    return title;
+  }
+
+  // extract chart notes
+  function extractChartNotes(chartContent, chartNotes) {
+    // look for a terminating blockquote or image caption
+    var blockquote = chartContent.children('blockquote:last-child');
+    var caption = chartContent.children('div.image-container')
+                              .children('p.caption');
+    if (blockquote.length) {
+      chartNotes.html(blockquote.children('p:first-child').html());
+      blockquote.remove();
+      return true;
+    } else if (caption.length) {
+      chartNotes.html(caption.html());
+      caption.remove();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function findShinyOutput(chartContent) {
+    return chartContent.find('.shiny-text-output, .shiny-html-output');
+  }
+
+  // safely detect rendering on a mobile phone
+  function isMobilePhone() {
+    try
+    {
+      return ! window.matchMedia("only screen and (min-width: 768px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  function isFillPage() {
+    return _options.fillPage;
+  }
+
+  // detect portrait mode
+  function isPortrait() {
+    return ($(window).width() < $(window).height());
+  }
+
+  // safely detect rendering on a tablet
+  function isTablet() {
+    try
+    {
+      return window.matchMedia("only screen and (min-width: 769px) and (max-width: 992px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  // test whether this is a shiny doc
+  function isShinyDoc() {
+    return (typeof(window.Shiny) !== "undefined" && !!window.Shiny.outputBindings);
+  }
+
+  // set flex using vendor specific prefixes
+  function setFlex(el, flex) {
+    el.css('-webkit-box-flex', flex)
+      .css('-webkit-flex', flex)
+      .css('-ms-flex', flex)
+      .css('flex', flex);
+  }
+
+  // support bookmarking of pages
+  function handleLocationHash() {
+
+    // restore tab/page from bookmark
+    var hash = window.location.hash;
+    if (hash.length > 0)
+      $('ul.nav a[href="' + hash + '"]').tab('show');
+    FlexDashboardUtils.manageActiveNavbarMenu();
+
+    // navigate to a tab when the history changes
+    window.addEventListener("popstate", function(e) {
+      var hash = window.location.hash;
+      var activeTab = $('ul.nav a[href="' + hash + '"]');
+      if (activeTab.length) {
+        activeTab.tab('show');
+      } else {
+        $('ul.nav a:first').tab('show');
+      }
+      FlexDashboardUtils.manageActiveNavbarMenu();
+    });
+
+    // add a hash to the URL when the user clicks on a tab/page
+    $('.navbar-nav a[data-toggle="tab"]').on('click', function(e) {
+      var baseUrl = FlexDashboardUtils.urlWithoutHash(window.location.href);
+      var hash = FlexDashboardUtils.urlHash($(this).attr('href'));
+      var href = baseUrl + hash;
+      FlexDashboardUtils.setLocation(href);
+    });
+
+    // handle clicks of other links that should activate pages
+    var navPages = $('ul.navbar-nav li a[data-toggle=tab]');
+    navPages.each(function() {
+      var href =  $(this).attr('href');
+      var links = $('a[href="' + href + '"][data-toggle!=tab]');
+      links.each(function() {
+        $(this).on('click', function(e) {
+          window.FlexDashboardUtils.showPage(href);
+        });
+      });
+    });
+  }
+
+  // tweak Prism highlighting
+  function initPrismHighlighting() {
+
+    if (window.Prism) {
+      Prism.languages.insertBefore('r', 'comment', {
+        'heading': [
+          {
+            // title 1
+        	  // =======
+
+        	  // title 2
+        	  // -------
+        	  pattern: /\w+.*(?:\r?\n|\r)(?:====+|----+)/,
+            alias: 'operator'
+          },
+          {
+            // ### title 3
+            pattern: /(^\s*)###[^#].+/m,
+            lookbehind: true,
+            alias: 'operator'
+          }
+        ]
+      });
+
+      // prism highlight
+      Prism.highlightAll();
+    }
+  }
+
+
+  // get theme color
+  var themeColors = {
+    bootstrap: {
+      primary: "rgba(51, 122, 183, 0.4)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    cerulean: {
+      primary: "rgb(47, 164, 231)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    journal: {
+      primary: "rgba(235, 104, 100, 0.70)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    flatly: {
+      primary: "rgba(44, 62, 80, 0.70)",
+      info: "rgba(52, 152, 219, 0.70)",
+      success: "rgba(24, 188, 156, 0.70)",
+      warning: "rgba(243, 156, 18, 0.70)",
+      danger: "rgba(231, 76, 60, 0.70)"
+    },
+    readable: {
+      primary: "rgba(69, 130, 236, 0.4)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    spacelab: {
+      primary: "rgba(68, 110, 155, 0.25)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    united: {
+      primary: "rgba(221, 72, 20, 0.30)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    cosmo: {
+      primary: "rgba(39, 128, 227, 0.7)",
+      info: "rgba(153, 84, 187, 0.7)",
+      success: "rgba(63, 182, 24, 0.7)",
+      warning: "rgba(255, 117, 24, 0.7)",
+      danger: "rgba(255, 0, 57, 0.7)"
+    },
+    lumen: {
+      primary: "rgba(21, 140, 186, 0.70)",
+      info: "rgba(117, 202, 235, 0.90)",
+      success: "rgba(40, 182, 44, 0.70)",
+      warning: "rgba(255, 133, 27, 0.70)",
+      danger: "rgba(255, 65, 54, 0.70)"
+    },
+    paper: {
+      primary: "rgba(33, 150, 243, 0.35)",
+      info: "rgb(225, 190, 231)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(255, 224, 178)",
+      danger: "rgb(249, 189, 187)"
+    },
+    sandstone: {
+      primary: "rgba(50, 93, 136, 0.3)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    simplex: {
+      primary: "rgba(217, 35, 15, 0.25)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    yeti: {
+      primary: "rgba(0, 140, 186, 0.298039)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    }
+  }
+  function themeColor(color) {
+    return themeColors[_options.theme][color];
+  }
+
+  FlexDashboard.prototype = {
+    constructor: FlexDashboard,
+    init: init,
+    isMobilePhone: isMobilePhone,
+    isFillPage: isFillPage,
+    themeColor: themeColor
+  };
+
+  return FlexDashboard;
+
+})();
+
+// utils
+window.FlexDashboardUtils = {
+  resizableImage: function(img) {
+    var src = img.attr('src');
+    var url = 'url("' + src + '")';
+    img.parent().css('background', url)
+                .css('background-size', 'contain')
+                .css('background-repeat', 'no-repeat')
+                .css('background-position', 'center')
+                .addClass('image-container');
+  },
+  setLocation: function(href) {
+    if (history && history.pushState) {
+      history.pushState(null, null, href);
+    } else {
+      window.location.replace(href);
+    }
+    setTimeout(function() {
+        window.scrollTo(0, 0);
+    }, 10);
+    this.manageActiveNavbarMenu();
+  },
+  showPage: function(href) {
+    $('ul.navbar-nav li a[href="' + href + '"]').tab('show');
+    var baseUrl = this.urlWithoutHash(window.location.href);
+    var loc = baseUrl + href;
+    this.setLocation(loc);
+  },
+  showLinkedValue: function(href) {
+    // check for a page link
+    if ($('ul.navbar-nav li a[data-toggle=tab][href="' + href + '"]').length > 0)
+      this.showPage(href);
+    else
+      window.open(href);
+  },
+  urlWithoutHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(0, hashLoc);
+    else
+      return url;
+  },
+  urlHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(hashLoc);
+    else
+      return "";
+  },
+  manageActiveNavbarMenu: function () {
+    // remove active from anyone currently active
+    $('.navbar ul.nav').find('li').removeClass('active');
+    // find the active tab
+    var activeTab = $('.dashboard-page-wrapper.tab-pane.active');
+    if (activeTab.length > 0) {
+      var tabId = activeTab.attr('id');
+      if (tabId)
+        $(".navbar ul.nav a[href='#" + tabId + "']").parents('li').addClass('active');
+    }
+  }
+};
+
+window.FlexDashboard = new FlexDashboard();
+
+// empty content
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    if (container.find('p').length == 0)
+      return container;
+    else
+      return $();
+  }
+})
+
+// plot image
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('p')
+                    .children('img:only-child');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// plot image (figure style)
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.figure').children('img');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// htmlwidget
+window.FlexDashboardComponents.push({
+
+  init: function(dashboardContainer) {
+    // trigger "shown" after initial layout to force static htmlwidgets
+    // in runtime: shiny to be resized after the dom has been transformed
+    dashboardContainer.on('flexdashboard:layoutcomplete', function(event) {
+      setTimeout(function() {
+        dashboardContainer.trigger('shown');
+      }, 200);
+    });
+  },
+
+  find: function(container) {
+    return container.children('div[id^="htmlwidget-"],div.html-widget');
+  }
+});
+
+// gauge
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.html-widget.gauge');
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+
+  }
+
+});
+
+// shiny output
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    return container.children('div[class^="shiny-"]');
+  }
+});
+
+// datatables
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    return container.find('.datatables');
+  },
+  flex: function(fillPage) {
+    return fillPage;
+  }
+});
+
+// bootstrap table
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    var bsTable = container.find('table.table');
+    if (bsTable.length !== 0)
+      return bsTable;
+    else
+      return container.find('tr.header').parent('thead').parent('table');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var bsTable = element;
+
+    // fixup xtable generated tables with a proper thead
+    var headerRow = bsTable.find('tbody > tr:first-child > th').parent();
+    if (headerRow.length > 0) {
+      var thead = $('<thead></thead>');
+      bsTable.prepend(thead);
+      headerRow.detach().appendTo(thead);
+    }
+
+    // improve appearance
+    container.addClass('bootstrap-table');
+
+    // for fill page provide scrolling w/ sticky headers
+    if (fillPage) {
+      // force scrollbar on overflow
+      container.addClass('flowing-content-shim');
+
+      // stable table headers when scrolling
+      bsTable.stickyTableHeaders({
+        scrollableArea: container
+      });
+    }
+  }
+});
+
+// embedded shiny app
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('iframe.shiny-frame');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage) {
+      element.attr('height', '100%');
+    } else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (!height)
+        height = element.attr('height');
+      if (!height)
+        element.attr('height', 500);
+    }
+  }
+});
+
+// shiny fillRow or fillCol
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('.flexfill-container');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage)
+      element.css('height', '100%');
+    else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (height === "100%" || height === "auto" || height === "initial" ||
+          height === "inherit" || !height) {
+        element.css('height', 500);
+      }
+    }
+  }
+});
+
+// valueBox
+window.FlexDashboardComponents.push({
+
+  type: "custom",
+
+  find: function(container) {
+    if (container.find('span.value-output, .shiny-valuebox-output').length)
+      return container;
+    else
+      return $();
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var chartTitle = title;
+    var valueBox = element;
+
+    // add value-box class to container
+    container.addClass('value-box');
+
+    // value paragraph
+    var value = $('<p class="value"></p>');
+
+    // if we have shiny-text-output then just move it in
+    var valueOutputSpan = [];
+    var shinyOutput = valueBox.find('.shiny-valuebox-output').detach();
+    if (shinyOutput.length) {
+      valueBox.children().remove();
+      shinyOutput.html("&mdash;");
+      value.append(shinyOutput);
+    } else {
+      // extract the value (remove leading vector index)
+      var chartValue = valueBox.text().trim();
+      chartValue = chartValue.replace("[1] ", "");
+      valueOutputSpan = valueBox.find('span.value-output').detach();
+      valueBox.children().remove();
+      value.text(chartValue);
+    }
+
+    // caption
+    var caption = $('<p class="caption"></p>');
+    caption.html(chartTitle);
+
+    // build inner div for value box and add it
+    var inner = $('<div class="inner"></div>');
+    inner.append(value);
+    inner.append(caption);
+    valueBox.append(inner);
+
+    // add icon if specified
+    var icon = $('<div class="icon"><i></i></div>');
+    valueBox.append(icon);
+    function setIcon(chartIcon) {
+      var iconLib = "";
+      var components = chartIcon.split("-");
+      if (components.length > 1)
+        iconLib = components[0];
+      icon.children('i').attr('class', iconLib + ' ' + chartIcon);
+    }
+    var chartIcon = valueBox.attr('data-icon');
+    if (chartIcon)
+      setIcon(chartIcon);
+
+    // set color based on data-background if necessary
+    var dataBackground = valueBox.attr('data-background');
+    if (dataBackground)
+      valueBox.css('background-color', bgColor);
+    else {
+      // default to bg-primary if no other background is specified
+      if (!valueBox.hasClass('bg-primary') &&
+          !valueBox.hasClass('bg-info') &&
+          !valueBox.hasClass('bg-warning') &&
+          !valueBox.hasClass('bg-success') &&
+          !valueBox.hasClass('bg-danger')) {
+        valueBox.addClass('bg-primary');
+      }
+    }
+
+    // handle data attributes in valueOutputSpan
+    function handleValueOutput(valueOutput) {
+
+      // caption
+      var dataCaption = valueOutput.attr('data-caption');
+      if (dataCaption)
+        caption.html(dataCaption);
+
+      // icon
+      var dataIcon = valueOutput.attr('data-icon');
+      if (dataIcon)
+        setIcon(dataIcon);
+
+      // color
+      var dataColor = valueOutput.attr('data-color');
+      if (dataColor) {
+        if (dataColor.indexOf('bg-') === 0) {
+          valueBox.css('background-color', '');
+          if (!valueBox.hasClass(dataColor)) {
+             valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
+             valueBox.addClass(dataColor);
+          }
+        } else {
+          valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
+          valueBox.css('background-color', dataColor);
+        }
+      }
+
+      // url
+      var dataHref = valueOutput.attr('data-href');
+      if (dataHref) {
+        valueBox.addClass('linked-value');
+        valueBox.off('click.value-box');
+        valueBox.on('click.value-box', function(e) {
+          window.FlexDashboardUtils.showLinkedValue(dataHref);
+        });
+      }
+    }
+
+    // check for a valueOutputSpan
+    if (valueOutputSpan.length > 0) {
+      handleValueOutput(valueOutputSpan);
+    }
+
+    // if we have a shinyOutput then bind a listener to handle
+    // new valueOutputSpan values
+    shinyOutput.on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+          var valueOutputSpan = element.find('span.value-output');
+          if (valueOutputSpan.length > 0)
+            handleValueOutput(valueOutputSpan);
+        }, 10);
+      }
+    );
+  }
+});
+
+
+</script>
+
+<div id="dashboard-container">
+
+<div id="studienpopulation" class="section level1">
+<h1>Studienpopulation</h1>
+<div id="row" class="section level2">
+<h2>Row</h2>
+<div id="grafik-übersicht-studienpopulation" class="section level3">
+<h3>Grafik Übersicht Studienpopulation</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div id="htmlwidget-71bd161c9b437a2149cc" style="width:576px;height:460.8px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-71bd161c9b437a2149cc">{"x":{"data":[{"orientation":"h","width":0.9,"base":337,"x":[18],"y":[1],"text":"center: HD<br />n:  18<br />organ: Herz","type":"bar","marker":{"autocolorscale":false,"color":"rgba(68,1,84,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Herz","legendgroup":"Herz","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9],"base":[306,166,234,172],"x":[31,100,89,91],"y":[1,2,3,5],"text":["center: HD<br />n:  31<br />organ: Leber","center: KUM<br />n: 100<br />organ: Leber","center: MHH<br />n:  89<br />organ: Leber","center: TUE<br />n:  91<br />organ: Leber"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(65,68,135,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Leber","legendgroup":"Leber","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9],"base":[165,233],"x":[1,1],"y":[2,3],"text":["center: KUM<br />n:   1<br />organ: Lunge","center: MHH<br />n:   1<br />organ: Lunge"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(42,120,142,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Lunge","legendgroup":"Lunge","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9],"base":[5,14,131,83,45],"x":[301,151,102,188,127],"y":[1,2,3,4,5],"text":["center: HD<br />n: 301<br />organ: Niere","center: KUM<br />n: 151<br />organ: Niere","center: MHH<br />n: 102<br />organ: Niere","center: MRI<br />n: 188<br />organ: Niere","center: TUE<br />n: 127<br />organ: Niere"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(34,168,132,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Niere","legendgroup":"Niere","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9],"base":[0,0,81,33],"x":[5,14,2,12],"y":[1,2,4,5],"text":["center: HD<br />n:   5<br />organ: Pankreas","center: KUM<br />n:  14<br />organ: Pankreas","center: MRI<br />n:   2<br />organ: Pankreas","center: TUE<br />n:  12<br />organ: Pankreas"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(122,209,81,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Pankreas","legendgroup":"Pankreas","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9],"base":[0,0,0],"x":[131,81,33],"y":[3,4,5],"text":["center: MHH<br />n: 131<br />organ: Stammzellen","center: MRI<br />n:  81<br />organ: Stammzellen","center: TUE<br />n:  33<br />organ: Stammzellen"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(253,231,37,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Stammzellen","legendgroup":"Stammzellen","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":25.1383695506671,"r":7.30593607305936,"b":39.0927074502105,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-17.75,372.75],"tickmode":"array","ticktext":["0","100","200","300"],"tickvals":[0,100,200,300],"categoryorder":"array","categoryarray":["0","100","200","300"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Anzahl","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,5.6],"tickmode":"array","ticktext":["HD","KUM","MHH","MRI","TUE"],"tickvals":[1,2,3,4,5],"categoryorder":"array","categoryarray":["HD","KUM","MHH","MRI","TUE"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"Zentrum","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.966144297109441},"annotations":[{"text":"Organ","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"11706f397132":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"11706f397132","visdat":{"11706f397132":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="row-1" class="section level2">
+<h2>Row</h2>
+<div id="populationstrend-nach-zentrum" class="section level3">
+<h3>Populationstrend nach Zentrum</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div id="htmlwidget-af7325cd96e40ecd9992" style="width:576px;height:460.8px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-af7325cd96e40ecd9992">{"x":{"data":[{"x":[1577577600,1578182400,1578787200,1579392000,1579996800,1580601600,1581206400,1581811200,1582416000,1583020800,1583625600,1584230400,1584835200,1585440000,1586044800,1586649600,1587254400,1587859200,1588464000,1589068800,1589673600,1590278400,1590883200,1591488000,1592092800,1592697600,1593302400,1593907200,1594512000,1595116800,1595721600,1596326400,1596931200,1597536000,1598140800,1598745600,1599350400,1599955200,1600560000,1601164800,1601769600,1602374400,1602979200,1603584000,1604188800,1604793600,1605398400,1606003200,1606608000,1607212800,1607817600,1608422400],"y":[2,6,22,25,32,35,43,55,63,72,85,94,99,107,112,117,124,128,133,146,156,158,161,170,180,183,193,203,209,214,220,228,235,241,246,247,251,263,273,278,284,289,302,306,311,317,330,336,342,345,353,355],"text":["date: 2019-12-29<br />cumsum:   2<br />Zentrum: HD","date: 2020-01-05<br />cumsum:   6<br />Zentrum: HD","date: 2020-01-12<br />cumsum:  22<br />Zentrum: HD","date: 2020-01-19<br />cumsum:  25<br />Zentrum: HD","date: 2020-01-26<br />cumsum:  32<br />Zentrum: HD","date: 2020-02-02<br />cumsum:  35<br />Zentrum: HD","date: 2020-02-09<br />cumsum:  43<br />Zentrum: HD","date: 2020-02-16<br />cumsum:  55<br />Zentrum: HD","date: 2020-02-23<br />cumsum:  63<br />Zentrum: HD","date: 2020-03-01<br />cumsum:  72<br />Zentrum: HD","date: 2020-03-08<br />cumsum:  85<br />Zentrum: HD","date: 2020-03-15<br />cumsum:  94<br />Zentrum: HD","date: 2020-03-22<br />cumsum:  99<br />Zentrum: HD","date: 2020-03-29<br />cumsum: 107<br />Zentrum: HD","date: 2020-04-05<br />cumsum: 112<br />Zentrum: HD","date: 2020-04-12<br />cumsum: 117<br />Zentrum: HD","date: 2020-04-19<br />cumsum: 124<br />Zentrum: HD","date: 2020-04-26<br />cumsum: 128<br />Zentrum: HD","date: 2020-05-03<br />cumsum: 133<br />Zentrum: HD","date: 2020-05-10<br />cumsum: 146<br />Zentrum: HD","date: 2020-05-17<br />cumsum: 156<br />Zentrum: HD","date: 2020-05-24<br />cumsum: 158<br />Zentrum: HD","date: 2020-05-31<br />cumsum: 161<br />Zentrum: HD","date: 2020-06-07<br />cumsum: 170<br />Zentrum: HD","date: 2020-06-14<br />cumsum: 180<br />Zentrum: HD","date: 2020-06-21<br />cumsum: 183<br />Zentrum: HD","date: 2020-06-28<br />cumsum: 193<br />Zentrum: HD","date: 2020-07-05<br />cumsum: 203<br />Zentrum: HD","date: 2020-07-12<br />cumsum: 209<br />Zentrum: HD","date: 2020-07-19<br />cumsum: 214<br />Zentrum: HD","date: 2020-07-26<br />cumsum: 220<br />Zentrum: HD","date: 2020-08-02<br />cumsum: 228<br />Zentrum: HD","date: 2020-08-09<br />cumsum: 235<br />Zentrum: HD","date: 2020-08-16<br />cumsum: 241<br />Zentrum: HD","date: 2020-08-23<br />cumsum: 246<br />Zentrum: HD","date: 2020-08-30<br />cumsum: 247<br />Zentrum: HD","date: 2020-09-06<br />cumsum: 251<br />Zentrum: HD","date: 2020-09-13<br />cumsum: 263<br />Zentrum: HD","date: 2020-09-20<br />cumsum: 273<br />Zentrum: HD","date: 2020-09-27<br />cumsum: 278<br />Zentrum: HD","date: 2020-10-04<br />cumsum: 284<br />Zentrum: HD","date: 2020-10-11<br />cumsum: 289<br />Zentrum: HD","date: 2020-10-18<br />cumsum: 302<br />Zentrum: HD","date: 2020-10-25<br />cumsum: 306<br />Zentrum: HD","date: 2020-11-01<br />cumsum: 311<br />Zentrum: HD","date: 2020-11-08<br />cumsum: 317<br />Zentrum: HD","date: 2020-11-15<br />cumsum: 330<br />Zentrum: HD","date: 2020-11-22<br />cumsum: 336<br />Zentrum: HD","date: 2020-11-29<br />cumsum: 342<br />Zentrum: HD","date: 2020-12-06<br />cumsum: 345<br />Zentrum: HD","date: 2020-12-13<br />cumsum: 353<br />Zentrum: HD","date: 2020-12-20<br />cumsum: 355<br />Zentrum: HD"],"type":"scatter","mode":"lines","line":{"width":7.55905511811024,"color":"rgba(68,1,84,1)","dash":"solid"},"hoveron":"points","name":"HD","legendgroup":"HD","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1578182400,1578787200,1579392000,1579996800,1580601600,1581206400,1581811200,1582416000,1583020800,1583625600,1584230400,1584835200,1585440000,1586044800,1586649600,1587254400,1587859200,1588464000,1589068800,1589673600,1590278400,1590883200,1591488000,1592092800,1592697600,1593302400,1593907200,1594512000,1595116800,1595721600,1596326400,1596931200,1598745600,1599350400,1599955200,1600560000,1601164800,1601769600,1602374400,1602979200,1603584000,1604188800,1605398400,1606003200,1606608000,1607212800,1607817600,1608422400,1609027200],"y":[2,3,10,15,26,30,34,39,51,54,59,71,75,81,88,96,100,102,109,113,124,132,135,142,146,150,156,162,169,172,182,186,197,203,208,212,213,218,222,228,234,239,240,246,248,259,262,264,266],"text":["date: 2020-01-05<br />cumsum:   2<br />Zentrum: KUM","date: 2020-01-12<br />cumsum:   3<br />Zentrum: KUM","date: 2020-01-19<br />cumsum:  10<br />Zentrum: KUM","date: 2020-01-26<br />cumsum:  15<br />Zentrum: KUM","date: 2020-02-02<br />cumsum:  26<br />Zentrum: KUM","date: 2020-02-09<br />cumsum:  30<br />Zentrum: KUM","date: 2020-02-16<br />cumsum:  34<br />Zentrum: KUM","date: 2020-02-23<br />cumsum:  39<br />Zentrum: KUM","date: 2020-03-01<br />cumsum:  51<br />Zentrum: KUM","date: 2020-03-08<br />cumsum:  54<br />Zentrum: KUM","date: 2020-03-15<br />cumsum:  59<br />Zentrum: KUM","date: 2020-03-22<br />cumsum:  71<br />Zentrum: KUM","date: 2020-03-29<br />cumsum:  75<br />Zentrum: KUM","date: 2020-04-05<br />cumsum:  81<br />Zentrum: KUM","date: 2020-04-12<br />cumsum:  88<br />Zentrum: KUM","date: 2020-04-19<br />cumsum:  96<br />Zentrum: KUM","date: 2020-04-26<br />cumsum: 100<br />Zentrum: KUM","date: 2020-05-03<br />cumsum: 102<br />Zentrum: KUM","date: 2020-05-10<br />cumsum: 109<br />Zentrum: KUM","date: 2020-05-17<br />cumsum: 113<br />Zentrum: KUM","date: 2020-05-24<br />cumsum: 124<br />Zentrum: KUM","date: 2020-05-31<br />cumsum: 132<br />Zentrum: KUM","date: 2020-06-07<br />cumsum: 135<br />Zentrum: KUM","date: 2020-06-14<br />cumsum: 142<br />Zentrum: KUM","date: 2020-06-21<br />cumsum: 146<br />Zentrum: KUM","date: 2020-06-28<br />cumsum: 150<br />Zentrum: KUM","date: 2020-07-05<br />cumsum: 156<br />Zentrum: KUM","date: 2020-07-12<br />cumsum: 162<br />Zentrum: KUM","date: 2020-07-19<br />cumsum: 169<br />Zentrum: KUM","date: 2020-07-26<br />cumsum: 172<br />Zentrum: KUM","date: 2020-08-02<br />cumsum: 182<br />Zentrum: KUM","date: 2020-08-09<br />cumsum: 186<br />Zentrum: KUM","date: 2020-08-30<br />cumsum: 197<br />Zentrum: KUM","date: 2020-09-06<br />cumsum: 203<br />Zentrum: KUM","date: 2020-09-13<br />cumsum: 208<br />Zentrum: KUM","date: 2020-09-20<br />cumsum: 212<br />Zentrum: KUM","date: 2020-09-27<br />cumsum: 213<br />Zentrum: KUM","date: 2020-10-04<br />cumsum: 218<br />Zentrum: KUM","date: 2020-10-11<br />cumsum: 222<br />Zentrum: KUM","date: 2020-10-18<br />cumsum: 228<br />Zentrum: KUM","date: 2020-10-25<br />cumsum: 234<br />Zentrum: KUM","date: 2020-11-01<br />cumsum: 239<br />Zentrum: KUM","date: 2020-11-15<br />cumsum: 240<br />Zentrum: KUM","date: 2020-11-22<br />cumsum: 246<br />Zentrum: KUM","date: 2020-11-29<br />cumsum: 248<br />Zentrum: KUM","date: 2020-12-06<br />cumsum: 259<br />Zentrum: KUM","date: 2020-12-13<br />cumsum: 262<br />Zentrum: KUM","date: 2020-12-20<br />cumsum: 264<br />Zentrum: KUM","date: 2020-12-27<br />cumsum: 266<br />Zentrum: KUM"],"type":"scatter","mode":"lines","line":{"width":7.55905511811024,"color":"rgba(59,82,139,1)","dash":"solid"},"hoveron":"points","name":"KUM","legendgroup":"KUM","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1577577600,1578182400,1578787200,1579392000,1579996800,1580601600,1581206400,1581811200,1582416000,1583020800,1583625600,1584230400,1584835200,1585440000,1586044800,1586649600,1587254400,1587859200,1588464000,1589068800,1589673600,1590278400,1590883200,1591488000,1592092800,1592697600,1593302400,1593907200,1594512000,1595116800,1595721600,1596326400,1596931200,1597536000,1598140800,1598745600,1599350400,1599955200,1600560000,1601164800,1601769600,1602374400,1602979200,1603584000,1604188800,1604793600,1605398400,1606003200,1606608000,1607212800,1607817600,1608422400],"y":[2,14,21,29,36,48,58,66,72,78,90,100,105,111,117,121,134,140,148,153,158,167,170,175,182,188,194,196,203,204,207,212,221,230,233,237,244,248,256,261,265,269,275,280,285,287,290,298,307,316,321,323],"text":["date: 2019-12-29<br />cumsum:   2<br />Zentrum: MHH","date: 2020-01-05<br />cumsum:  14<br />Zentrum: MHH","date: 2020-01-12<br />cumsum:  21<br />Zentrum: MHH","date: 2020-01-19<br />cumsum:  29<br />Zentrum: MHH","date: 2020-01-26<br />cumsum:  36<br />Zentrum: MHH","date: 2020-02-02<br />cumsum:  48<br />Zentrum: MHH","date: 2020-02-09<br />cumsum:  58<br />Zentrum: MHH","date: 2020-02-16<br />cumsum:  66<br />Zentrum: MHH","date: 2020-02-23<br />cumsum:  72<br />Zentrum: MHH","date: 2020-03-01<br />cumsum:  78<br />Zentrum: MHH","date: 2020-03-08<br />cumsum:  90<br />Zentrum: MHH","date: 2020-03-15<br />cumsum: 100<br />Zentrum: MHH","date: 2020-03-22<br />cumsum: 105<br />Zentrum: MHH","date: 2020-03-29<br />cumsum: 111<br />Zentrum: MHH","date: 2020-04-05<br />cumsum: 117<br />Zentrum: MHH","date: 2020-04-12<br />cumsum: 121<br />Zentrum: MHH","date: 2020-04-19<br />cumsum: 134<br />Zentrum: MHH","date: 2020-04-26<br />cumsum: 140<br />Zentrum: MHH","date: 2020-05-03<br />cumsum: 148<br />Zentrum: MHH","date: 2020-05-10<br />cumsum: 153<br />Zentrum: MHH","date: 2020-05-17<br />cumsum: 158<br />Zentrum: MHH","date: 2020-05-24<br />cumsum: 167<br />Zentrum: MHH","date: 2020-05-31<br />cumsum: 170<br />Zentrum: MHH","date: 2020-06-07<br />cumsum: 175<br />Zentrum: MHH","date: 2020-06-14<br />cumsum: 182<br />Zentrum: MHH","date: 2020-06-21<br />cumsum: 188<br />Zentrum: MHH","date: 2020-06-28<br />cumsum: 194<br />Zentrum: MHH","date: 2020-07-05<br />cumsum: 196<br />Zentrum: MHH","date: 2020-07-12<br />cumsum: 203<br />Zentrum: MHH","date: 2020-07-19<br />cumsum: 204<br />Zentrum: MHH","date: 2020-07-26<br />cumsum: 207<br />Zentrum: MHH","date: 2020-08-02<br />cumsum: 212<br />Zentrum: MHH","date: 2020-08-09<br />cumsum: 221<br />Zentrum: MHH","date: 2020-08-16<br />cumsum: 230<br />Zentrum: MHH","date: 2020-08-23<br />cumsum: 233<br />Zentrum: MHH","date: 2020-08-30<br />cumsum: 237<br />Zentrum: MHH","date: 2020-09-06<br />cumsum: 244<br />Zentrum: MHH","date: 2020-09-13<br />cumsum: 248<br />Zentrum: MHH","date: 2020-09-20<br />cumsum: 256<br />Zentrum: MHH","date: 2020-09-27<br />cumsum: 261<br />Zentrum: MHH","date: 2020-10-04<br />cumsum: 265<br />Zentrum: MHH","date: 2020-10-11<br />cumsum: 269<br />Zentrum: MHH","date: 2020-10-18<br />cumsum: 275<br />Zentrum: MHH","date: 2020-10-25<br />cumsum: 280<br />Zentrum: MHH","date: 2020-11-01<br />cumsum: 285<br />Zentrum: MHH","date: 2020-11-08<br />cumsum: 287<br />Zentrum: MHH","date: 2020-11-15<br />cumsum: 290<br />Zentrum: MHH","date: 2020-11-22<br />cumsum: 298<br />Zentrum: MHH","date: 2020-11-29<br />cumsum: 307<br />Zentrum: MHH","date: 2020-12-06<br />cumsum: 316<br />Zentrum: MHH","date: 2020-12-13<br />cumsum: 321<br />Zentrum: MHH","date: 2020-12-20<br />cumsum: 323<br />Zentrum: MHH"],"type":"scatter","mode":"lines","line":{"width":7.55905511811024,"color":"rgba(33,144,140,1)","dash":"solid"},"hoveron":"points","name":"MHH","legendgroup":"MHH","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1577577600,1578182400,1578787200,1579392000,1579996800,1580601600,1581206400,1581811200,1582416000,1583020800,1583625600,1584230400,1584835200,1585440000,1586044800,1586649600,1587859200,1588464000,1589068800,1589673600,1590278400,1590883200,1591488000,1592092800,1593302400,1593907200,1594512000,1595116800,1595721600,1596326400,1596931200,1597536000,1598140800,1599955200,1600560000,1601164800,1601769600,1602374400,1603584000,1604188800,1605398400,1606003200,1606608000,1607212800,1607817600,1608422400,1609027200],"y":[2,10,18,20,40,45,46,50,51,89,95,97,104,109,116,120,123,141,145,153,155,156,162,166,171,172,178,186,187,192,200,207,214,220,223,227,235,236,238,240,251,253,257,259,268,269,271],"text":["date: 2019-12-29<br />cumsum:   2<br />Zentrum: MRI","date: 2020-01-05<br />cumsum:  10<br />Zentrum: MRI","date: 2020-01-12<br />cumsum:  18<br />Zentrum: MRI","date: 2020-01-19<br />cumsum:  20<br />Zentrum: MRI","date: 2020-01-26<br />cumsum:  40<br />Zentrum: MRI","date: 2020-02-02<br />cumsum:  45<br />Zentrum: MRI","date: 2020-02-09<br />cumsum:  46<br />Zentrum: MRI","date: 2020-02-16<br />cumsum:  50<br />Zentrum: MRI","date: 2020-02-23<br />cumsum:  51<br />Zentrum: MRI","date: 2020-03-01<br />cumsum:  89<br />Zentrum: MRI","date: 2020-03-08<br />cumsum:  95<br />Zentrum: MRI","date: 2020-03-15<br />cumsum:  97<br />Zentrum: MRI","date: 2020-03-22<br />cumsum: 104<br />Zentrum: MRI","date: 2020-03-29<br />cumsum: 109<br />Zentrum: MRI","date: 2020-04-05<br />cumsum: 116<br />Zentrum: MRI","date: 2020-04-12<br />cumsum: 120<br />Zentrum: MRI","date: 2020-04-26<br />cumsum: 123<br />Zentrum: MRI","date: 2020-05-03<br />cumsum: 141<br />Zentrum: MRI","date: 2020-05-10<br />cumsum: 145<br />Zentrum: MRI","date: 2020-05-17<br />cumsum: 153<br />Zentrum: MRI","date: 2020-05-24<br />cumsum: 155<br />Zentrum: MRI","date: 2020-05-31<br />cumsum: 156<br />Zentrum: MRI","date: 2020-06-07<br />cumsum: 162<br />Zentrum: MRI","date: 2020-06-14<br />cumsum: 166<br />Zentrum: MRI","date: 2020-06-28<br />cumsum: 171<br />Zentrum: MRI","date: 2020-07-05<br />cumsum: 172<br />Zentrum: MRI","date: 2020-07-12<br />cumsum: 178<br />Zentrum: MRI","date: 2020-07-19<br />cumsum: 186<br />Zentrum: MRI","date: 2020-07-26<br />cumsum: 187<br />Zentrum: MRI","date: 2020-08-02<br />cumsum: 192<br />Zentrum: MRI","date: 2020-08-09<br />cumsum: 200<br />Zentrum: MRI","date: 2020-08-16<br />cumsum: 207<br />Zentrum: MRI","date: 2020-08-23<br />cumsum: 214<br />Zentrum: MRI","date: 2020-09-13<br />cumsum: 220<br />Zentrum: MRI","date: 2020-09-20<br />cumsum: 223<br />Zentrum: MRI","date: 2020-09-27<br />cumsum: 227<br />Zentrum: MRI","date: 2020-10-04<br />cumsum: 235<br />Zentrum: MRI","date: 2020-10-11<br />cumsum: 236<br />Zentrum: MRI","date: 2020-10-25<br />cumsum: 238<br />Zentrum: MRI","date: 2020-11-01<br />cumsum: 240<br />Zentrum: MRI","date: 2020-11-15<br />cumsum: 251<br />Zentrum: MRI","date: 2020-11-22<br />cumsum: 253<br />Zentrum: MRI","date: 2020-11-29<br />cumsum: 257<br />Zentrum: MRI","date: 2020-12-06<br />cumsum: 259<br />Zentrum: MRI","date: 2020-12-13<br />cumsum: 268<br />Zentrum: MRI","date: 2020-12-20<br />cumsum: 269<br />Zentrum: MRI","date: 2020-12-27<br />cumsum: 271<br />Zentrum: MRI"],"type":"scatter","mode":"lines","line":{"width":7.55905511811024,"color":"rgba(93,200,99,1)","dash":"solid"},"hoveron":"points","name":"MRI","legendgroup":"MRI","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1577577600,1578182400,1578787200,1579392000,1579996800,1580601600,1581206400,1581811200,1582416000,1583020800,1583625600,1584230400,1584835200,1585440000,1586649600,1587254400,1587859200,1588464000,1589068800,1589673600,1590278400,1590883200,1591488000,1592092800,1592697600,1593302400,1593907200,1594512000,1595116800,1595721600,1596326400,1596931200,1597536000,1598140800,1598745600,1599955200,1601164800,1601769600,1602374400,1602979200,1603584000,1604188800,1604793600,1605398400,1606003200,1606608000,1607212800,1607817600],"y":[4,5,7,22,32,43,44,52,63,65,72,74,79,84,87,95,99,102,107,119,127,128,140,143,149,158,163,165,179,184,186,188,189,194,199,200,203,210,216,220,226,228,240,244,250,259,261,263],"text":["date: 2019-12-29<br />cumsum:   4<br />Zentrum: TUE","date: 2020-01-05<br />cumsum:   5<br />Zentrum: TUE","date: 2020-01-12<br />cumsum:   7<br />Zentrum: TUE","date: 2020-01-19<br />cumsum:  22<br />Zentrum: TUE","date: 2020-01-26<br />cumsum:  32<br />Zentrum: TUE","date: 2020-02-02<br />cumsum:  43<br />Zentrum: TUE","date: 2020-02-09<br />cumsum:  44<br />Zentrum: TUE","date: 2020-02-16<br />cumsum:  52<br />Zentrum: TUE","date: 2020-02-23<br />cumsum:  63<br />Zentrum: TUE","date: 2020-03-01<br />cumsum:  65<br />Zentrum: TUE","date: 2020-03-08<br />cumsum:  72<br />Zentrum: TUE","date: 2020-03-15<br />cumsum:  74<br />Zentrum: TUE","date: 2020-03-22<br />cumsum:  79<br />Zentrum: TUE","date: 2020-03-29<br />cumsum:  84<br />Zentrum: TUE","date: 2020-04-12<br />cumsum:  87<br />Zentrum: TUE","date: 2020-04-19<br />cumsum:  95<br />Zentrum: TUE","date: 2020-04-26<br />cumsum:  99<br />Zentrum: TUE","date: 2020-05-03<br />cumsum: 102<br />Zentrum: TUE","date: 2020-05-10<br />cumsum: 107<br />Zentrum: TUE","date: 2020-05-17<br />cumsum: 119<br />Zentrum: TUE","date: 2020-05-24<br />cumsum: 127<br />Zentrum: TUE","date: 2020-05-31<br />cumsum: 128<br />Zentrum: TUE","date: 2020-06-07<br />cumsum: 140<br />Zentrum: TUE","date: 2020-06-14<br />cumsum: 143<br />Zentrum: TUE","date: 2020-06-21<br />cumsum: 149<br />Zentrum: TUE","date: 2020-06-28<br />cumsum: 158<br />Zentrum: TUE","date: 2020-07-05<br />cumsum: 163<br />Zentrum: TUE","date: 2020-07-12<br />cumsum: 165<br />Zentrum: TUE","date: 2020-07-19<br />cumsum: 179<br />Zentrum: TUE","date: 2020-07-26<br />cumsum: 184<br />Zentrum: TUE","date: 2020-08-02<br />cumsum: 186<br />Zentrum: TUE","date: 2020-08-09<br />cumsum: 188<br />Zentrum: TUE","date: 2020-08-16<br />cumsum: 189<br />Zentrum: TUE","date: 2020-08-23<br />cumsum: 194<br />Zentrum: TUE","date: 2020-08-30<br />cumsum: 199<br />Zentrum: TUE","date: 2020-09-13<br />cumsum: 200<br />Zentrum: TUE","date: 2020-09-27<br />cumsum: 203<br />Zentrum: TUE","date: 2020-10-04<br />cumsum: 210<br />Zentrum: TUE","date: 2020-10-11<br />cumsum: 216<br />Zentrum: TUE","date: 2020-10-18<br />cumsum: 220<br />Zentrum: TUE","date: 2020-10-25<br />cumsum: 226<br />Zentrum: TUE","date: 2020-11-01<br />cumsum: 228<br />Zentrum: TUE","date: 2020-11-08<br />cumsum: 240<br />Zentrum: TUE","date: 2020-11-15<br />cumsum: 244<br />Zentrum: TUE","date: 2020-11-22<br />cumsum: 250<br />Zentrum: TUE","date: 2020-11-29<br />cumsum: 259<br />Zentrum: TUE","date: 2020-12-06<br />cumsum: 261<br />Zentrum: TUE","date: 2020-12-13<br />cumsum: 263<br />Zentrum: TUE"],"type":"scatter","mode":"lines","line":{"width":7.55905511811024,"color":"rgba(253,231,37,1)","dash":"solid"},"hoveron":"points","name":"TUE","legendgroup":"TUE","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":25.1383695506671,"r":7.30593607305936,"b":39.0927074502105,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1576005120,1610599680],"tickmode":"array","ticktext":["Jan 2020","Apr 2020","Jul 2020","Oct 2020","Jan 2021"],"tickvals":[1577836800,1585699200,1593561600,1601510400,1609459200],"categoryorder":"array","categoryarray":["Jan 2020","Apr 2020","Jul 2020","Oct 2020","Jan 2021"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Datum","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-15.65,372.65],"tickmode":"array","ticktext":["0","100","200","300"],"tickvals":[0,100,200,300],"categoryorder":"array","categoryarray":["0","100","200","300"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"Kumulative Anzahl","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.966144297109441},"annotations":[{"text":"Zentrum","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"11703b091d58":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"11703b091d58","visdat":{"11703b091d58":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="tabelle-übersicht-studienpopulation" class="section level3">
+<h3>Tabelle Übersicht Studienpopulation</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Zentrum
+</th>
+<th style="text-align:right;">
+Herz
+</th>
+<th style="text-align:right;">
+Leber
+</th>
+<th style="text-align:right;">
+Lunge
+</th>
+<th style="text-align:right;">
+Niere
+</th>
+<th style="text-align:right;">
+Pankreas
+</th>
+<th style="text-align:right;">
+Stammzellen
+</th>
+<th style="text-align:right;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+HD
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+301
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+355
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KUM
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+266
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MHH
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+89
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+131
+</td>
+<td style="text-align:right;">
+323
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRI
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+188
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+81
+</td>
+<td style="text-align:right;">
+271
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+127
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+263
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+311
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+869
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+245
+</td>
+<td style="text-align:right;">
+1478
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="auf-einem-blick" class="section level3">
+<h3>Auf einem Blick</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+</div>
+</div>
+</div>
+<div id="bioproben" class="section level1" data-orientation="rows">
+<h1>Bioproben</h1>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div id="column" class="section level2">
+<h2>Column</h2>
+<div id="blutproben" class="section level3">
+<h3>Blutproben</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<span class="value-output" data-icon="ion-waterdrop" data-color="#830303">17538</span>
+</div>
+<div id="andere-proben" class="section level3">
+<h3>Andere Proben</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<span class="value-output" data-icon="fa-heart" data-color="#B07C9E">5592</span>
+</div>
+</div>
+<div id="column-1" class="section level2">
+<h2>Column</h2>
+<div class="knitr-options" data-fig-width="960" data-fig-height="460">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Probenart
+</th>
+<th style="text-align:right;">
+Herz
+</th>
+<th style="text-align:right;">
+Leber
+</th>
+<th style="text-align:right;">
+Lunge
+</th>
+<th style="text-align:right;">
+Niere
+</th>
+<th style="text-align:right;">
+Pankreas
+</th>
+<th style="text-align:right;">
+Stammzellen
+</th>
+<th style="text-align:right;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+EDTA-Buffy Coat
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EDTA-Plasma
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+533
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+801
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+443
+</td>
+<td style="text-align:right;">
+1813
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EDTA-Primärröhrchen
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+495
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+2388
+</td>
+<td style="text-align:right;">
+127
+</td>
+<td style="text-align:right;">
+540
+</td>
+<td style="text-align:right;">
+3578
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+keine Angabe
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+122
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PBMCs
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+783
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1519
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+359
+</td>
+<td style="text-align:right;">
+2732
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RNA
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+915
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2851
+</td>
+<td style="text-align:right;">
+127
+</td>
+<td style="text-align:right;">
+699
+</td>
+<td style="text-align:right;">
+4620
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Serum
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+930
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2885
+</td>
+<td style="text-align:right;">
+128
+</td>
+<td style="text-align:right;">
+700
+</td>
+<td style="text-align:right;">
+4672
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+3673
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+10487
+</td>
+<td style="text-align:right;">
+492
+</td>
+<td style="text-align:right;">
+2793
+</td>
+<td style="text-align:right;">
+17538
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="column-2" class="section level2">
+<h2>Column</h2>
+<div class="knitr-options" data-fig-width="960" data-fig-height="460">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-10-1.png" width="960" /></p>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Probenart
+</th>
+<th style="text-align:right;">
+Herz
+</th>
+<th style="text-align:right;">
+Leber
+</th>
+<th style="text-align:right;">
+Lunge
+</th>
+<th style="text-align:right;">
+Niere
+</th>
+<th style="text-align:right;">
+Pankreas
+</th>
+<th style="text-align:right;">
+Stammzellen
+</th>
+<th style="text-align:right;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Bukkaler Abstrich
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+58
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+keine Angabe
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rachenspülwasser
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stuhl
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+433
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+866
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+407
+</td>
+<td style="text-align:right;">
+1737
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Urin
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+744
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2296
+</td>
+<td style="text-align:right;">
+106
+</td>
+<td style="text-align:right;">
+627
+</td>
+<td style="text-align:right;">
+3782
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1194
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3203
+</td>
+<td style="text-align:right;">
+141
+</td>
+<td style="text-align:right;">
+1042
+</td>
+<td style="text-align:right;">
+5592
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="follow-up" class="section level1" data-orientation="rows">
+<h1>Follow up</h1>
+<div id="row-2" class="section level2 tabset">
+<h2>Row</h2>
+<div id="herz" class="section level3">
+<h3>Herz</h3>
+<div id="graph" class="section level4">
+<h4>Graph</h4>
+<div class="knitr-options" data-fig-width="1728" data-fig-height="576">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-13-1.png" width="1728" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tabelle" class="section level4">
+<h4>Tabelle</h4>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table style='width:80%;'>
+<thead>
+<tr>
+<th style="text-align:left;">
+Zentrum
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 3
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 6
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 9
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+HD
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">83.33</span>
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">50</span>
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">0</span>
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">0</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="leber" class="section level3">
+<h3>Leber</h3>
+<div id="graph-1" class="section level4">
+<h4>Graph</h4>
+<div class="knitr-options" data-fig-width="1728" data-fig-height="576">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-15-1.png" width="1728" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tabelle-1" class="section level4">
+<h4>Tabelle</h4>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table style='width:80%;'>
+<thead>
+<tr>
+<th style="text-align:left;">
+Zentrum
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 3
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 6
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 9
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+HD
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:center;">
+23
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">82.61</span>
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+23
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #508eb8">56.52</span>
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #6686a6">50.00</span>
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #a96f70">16.67</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KUM
+</td>
+<td style="text-align:center;">
+63
+</td>
+<td style="text-align:center;">
+85
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #578bb2">74.12</span>
+</td>
+<td style="text-align:center;">
+52
+</td>
+<td style="text-align:center;">
+85
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">61.18</span>
+</td>
+<td style="text-align:center;">
+46
+</td>
+<td style="text-align:center;">
+78
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">58.97</span>
+</td>
+<td style="text-align:center;">
+35
+</td>
+<td style="text-align:center;">
+73
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #568cb3">47.95</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MHH
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">22.22</span>
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">11.11</span>
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">22.22</span>
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">0.00</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TUE
+</td>
+<td style="text-align:center;">
+51
+</td>
+<td style="text-align:center;">
+78
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #6c84a1">65.38</span>
+</td>
+<td style="text-align:center;">
+41
+</td>
+<td style="text-align:center;">
+76
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #588bb1">53.95</span>
+</td>
+<td style="text-align:center;">
+25
+</td>
+<td style="text-align:center;">
+70
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #a07278">35.71</span>
+</td>
+<td style="text-align:center;">
+36
+</td>
+<td style="text-align:center;">
+65
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">55.38</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="lunge" class="section level3">
+<h3>Lunge</h3>
+<div id="graph-2" class="section level4">
+<h4>Graph</h4>
+<div class="knitr-options" data-fig-width="1728" data-fig-height="576">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-17-1.png" width="1728" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tabelle-2" class="section level4">
+<h4>Tabelle</h4>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table style='width:80%;'>
+<thead>
+<tr>
+<th style="text-align:left;">
+Zentrum
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 3
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 6
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 9
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+KUM
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">100</span>
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">100</span>
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">0</span>
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">0</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="niere" class="section level3">
+<h3>Niere</h3>
+<div id="graph-3" class="section level4">
+<h4>Graph</h4>
+<div class="knitr-options" data-fig-width="1728" data-fig-height="576">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-19-1.png" width="1728" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tabelle-3" class="section level4">
+<h4>Tabelle</h4>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table style='width:80%;'>
+<thead>
+<tr>
+<th style="text-align:left;">
+Zentrum
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 3
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 6
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 9
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+HD
+</td>
+<td style="text-align:center;">
+197
+</td>
+<td style="text-align:center;">
+238
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5d89ad">82.77</span>
+</td>
+<td style="text-align:center;">
+171
+</td>
+<td style="text-align:center;">
+231
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4f8eb9">74.03</span>
+</td>
+<td style="text-align:center;">
+142
+</td>
+<td style="text-align:center;">
+219
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #588bb1">64.84</span>
+</td>
+<td style="text-align:center;">
+106
+</td>
+<td style="text-align:center;">
+205
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #7f7d92">51.71</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KUM
+</td>
+<td style="text-align:center;">
+125
+</td>
+<td style="text-align:center;">
+143
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">87.41</span>
+</td>
+<td style="text-align:center;">
+108
+</td>
+<td style="text-align:center;">
+141
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">76.60</span>
+</td>
+<td style="text-align:center;">
+97
+</td>
+<td style="text-align:center;">
+138
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">70.29</span>
+</td>
+<td style="text-align:center;">
+70
+</td>
+<td style="text-align:center;">
+133
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #788098">52.63</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MHH
+</td>
+<td style="text-align:center;">
+40
+</td>
+<td style="text-align:center;">
+65
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">61.54</span>
+</td>
+<td style="text-align:center;">
+40
+</td>
+<td style="text-align:center;">
+64
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #857b8d">62.50</span>
+</td>
+<td style="text-align:center;">
+40
+</td>
+<td style="text-align:center;">
+63
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5e89ad">63.49</span>
+</td>
+<td style="text-align:center;">
+26
+</td>
+<td style="text-align:center;">
+63
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">41.27</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRI
+</td>
+<td style="text-align:center;">
+135
+</td>
+<td style="text-align:center;">
+171
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #73829c">78.95</span>
+</td>
+<td style="text-align:center;">
+95
+</td>
+<td style="text-align:center;">
+166
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #9e7379">57.23</span>
+</td>
+<td style="text-align:center;">
+68
+</td>
+<td style="text-align:center;">
+157
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #af6d6b">43.31</span>
+</td>
+<td style="text-align:center;">
+83
+</td>
+<td style="text-align:center;">
+152
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #6786a5">54.61</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TUE
+</td>
+<td style="text-align:center;">
+68
+</td>
+<td style="text-align:center;">
+104
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #c0675e">65.38</span>
+</td>
+<td style="text-align:center;">
+47
+</td>
+<td style="text-align:center;">
+103
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">45.63</span>
+</td>
+<td style="text-align:center;">
+31
+</td>
+<td style="text-align:center;">
+92
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">33.70</span>
+</td>
+<td style="text-align:center;">
+49
+</td>
+<td style="text-align:center;">
+83
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">59.04</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="pankreas" class="section level3">
+<h3>Pankreas</h3>
+<div id="graph-4" class="section level4">
+<h4>Graph</h4>
+<div class="knitr-options" data-fig-width="1728" data-fig-height="576">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-21-1.png" width="1728" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tabelle-4" class="section level4">
+<h4>Tabelle</h4>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table style='width:80%;'>
+<thead>
+<tr>
+<th style="text-align:left;">
+Zentrum
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 3
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 6
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 9
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+HD
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">100.00</span>
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #6c84a1">60.00</span>
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">20</span>
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #a96f70">20.00</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KUM
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5b8aaf">91.67</span>
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">83.33</span>
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #70839e">75</span>
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">66.67</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRI
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">50.00</span>
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">0.00</span>
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">100</span>
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">0.00</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TUE
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">50.00</span>
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #6786a5">62.50</span>
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #9e7379">50</span>
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4c8fbb">62.50</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="stammzellen" class="section level3">
+<h3>Stammzellen</h3>
+<div id="graph-5" class="section level4">
+<h4>Graph</h4>
+<div class="knitr-options" data-fig-width="1728" data-fig-height="576">
+
+</div>
+<p><img src="frame_files/figure-html/unnamed-chunk-23-1.png" width="1728" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tabelle-5" class="section level4">
+<h4>Tabelle</h4>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<table style='width:80%;'>
+<thead>
+<tr>
+<th style="text-align:left;">
+Zentrum
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 3
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 3
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 6
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 6
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 9
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 9
+</th>
+<th style="text-align:center;">
+IST Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+SOLL Stand<br/>Monat 12
+</th>
+<th style="text-align:center;">
+Performance in %<br/>Monat 12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MHH
+</td>
+<td style="text-align:center;">
+92
+</td>
+<td style="text-align:center;">
+100
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">92.00</span>
+</td>
+<td style="text-align:center;">
+68
+</td>
+<td style="text-align:center;">
+100
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">68.00</span>
+</td>
+<td style="text-align:center;">
+55
+</td>
+<td style="text-align:center;">
+96
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">57.29</span>
+</td>
+<td style="text-align:center;">
+43
+</td>
+<td style="text-align:center;">
+89
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4393c3">48.31</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRI
+</td>
+<td style="text-align:center;">
+41
+</td>
+<td style="text-align:center;">
+56
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">73.21</span>
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+54
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">3.70</span>
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+51
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">7.84</span>
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+47
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #d6604d">17.02</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TUE
+</td>
+<td style="text-align:center;">
+24
+</td>
+<td style="text-align:center;">
+29
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #8b7988">82.76</span>
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4b90bc">64.29</span>
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4e8fba">53.57</span>
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+27
+</td>
+<td style="text-align:center;">
+<span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #558cb4">44.44</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+
+$(document).ready(function () {
+
+  // add bootstrap table styles to pandoc tables
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+
+  // initialize mathjax
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "frame_files/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  FlexDashboard.init({
+    theme: "cosmo",
+    fillPage: true,
+    orientation: "rows",
+    storyboard: false,
+    defaultFigWidth: 576,
+    defaultFigHeight: 460,
+    defaultFigWidthMobile: 360,
+    defaultFigHeightMobile: 460
+  });
+});
+</script>
+
+</body>
+</html>

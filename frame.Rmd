@@ -1,0 +1,289 @@
+---
+title: "Datenauswertung TxKohorte"
+email: "stephan.gloeckner@helmholtz-hzi.de"
+date: '`r format(Sys.Date(), "%d.%m.%Y")`'
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    logo: logo/hzi3.png
+    self_contained: false
+    fig_mobile: false
+    mathjax: local
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(plotly)
+library(flexdashboard)
+library(kableExtra)
+library(formattable)
+library(DT)
+library(knitr)
+library(janitor)
+theme_set(theme_light())
+#result_path <- "../dzif_tx_data/"
+path <- paste0(result_path,"/")
+
+files <- list.files(path, pattern = "\\.RData$")
+for (i in seq_along(files)) {
+  load(paste0(path, "/", files[i]))
+}
+
+
+
+```
+
+Studienpopulation 
+=======================================================================
+
+Row 
+-----------------------------------------------------------------------
+
+### Grafik Übersicht Studienpopulation
+```{r}
+ggplotly(fig01)
+```
+
+Row 
+-----------------------------------------------------------------------
+### Populationstrend nach Zentrum
+```{r}
+ggplotly(fig02)
+```
+
+
+### Tabelle Übersicht Studienpopulation
+```{r}
+tab01 %>% 
+  kable() %>% 
+  kable_styling("striped")
+```
+
+### Auf einem Blick
+```{r}
+
+```
+
+
+Bioproben {data-orientation=rows}
+=======================================================================
+
+```{r}
+blood_value <- sum(df[[1]][[1]]$n)/2
+other_value <- sum(df[[2]][[1]]$n)/2
+```
+
+
+
+Column 
+-----------------------------------------------------------------------
+
+### Blutproben
+
+```{r}
+articles <- blood_value
+valueBox(articles, icon = "ion-waterdrop", color = "#830303")
+```
+
+### Andere Proben
+
+```{r}
+comments <- other_value
+valueBox(comments, icon = "fa-heart", color = "#B07C9E")
+```
+
+
+Column 
+-----------------------------------------------------------------------
+
+```{r fig.width=10}
+df[[1]][[2]]
+```
+
+```{r}
+if (!is.null(df)) {
+	df[[1]][[1]] %>% 
+	  filter(key == "Organ") %>% 
+	  select(-key) %>% 
+	  spread(value, n, fill = 0) %>% 
+	  adorn_totals() %>% 
+	  adorn_totals("col") %>% 
+	  kable() %>% 
+	  kable_styling("striped")
+}
+  
+```
+
+
+Column 
+-----------------------------------------------------------------------
+
+```{r fig.width=10}
+df[[2]][[2]]
+```
+
+```{r}
+if (!is.null(df)) {
+	df[[2]][[1]] %>% 
+	  filter(key == "Organ") %>% 
+	  select(-key) %>% 
+	  spread(value, n, fill = 0) %>% 
+	  adorn_totals() %>% 
+	  adorn_totals("col") %>% 
+	  kable() %>% 
+	  kable_styling("striped")
+}
+```
+
+Follow up {data-orientation=rows}
+=======================================================================
+
+
+Row {.tabset}
+-------------------------------------
+```{r include=FALSE}
+organs <- NULL
+if (!is.null(graphs)) {
+	organs <- tribble(
+		~id, ~organ, 
+		1, graphs[[1]]$labels$title %>% gsub("Organ\\: ", "", .),
+		2, graphs[[2]]$labels$title %>% gsub("Organ\\: ", "", .),
+		3, graphs[[3]]$labels$title %>% gsub("Organ\\: ", "", .),
+		4, graphs[[4]]$labels$title %>% gsub("Organ\\: ", "", .),
+		5, graphs[[5]]$labels$title %>% gsub("Organ\\: ", "", .),
+		6, graphs[[6]]$labels$title %>% gsub("Organ\\: ", "", .)
+	)	
+	
+	col_namen <- c(
+		"Zentrum", 
+		"IST Stand<br/>Monat 3", "SOLL Stand<br/>Monat 3", "Performance in %<br/>Monat 3",
+		"IST Stand<br/>Monat 6", "SOLL Stand<br/>Monat 6", "Performance in %<br/>Monat 6",
+		"IST Stand<br/>Monat 9", "SOLL Stand<br/>Monat 9", "Performance in %<br/>Monat 9",
+		"IST Stand<br/>Monat 12", "SOLL Stand<br/>Monat 12", "Performance in %<br/>Monat 12"
+	)
+	
+	table_style <- function(table){
+		table %>% 
+			select(-organ) %>% 
+			mutate_at(
+				vars(contains("Performance")), 
+				list(function(x) color_tile("#d6604d", "#4393c3")(x))) %>% 
+			set_names(col_namen) %>% 
+			knitr::kable(
+				"html", 
+				escape = FALSE, 
+				align = "lcccccccccccc", 
+				table.attr = "style='width:80%;'") 
+	}
+}
+```
+
+### `r if (!is.null(organs)) {pull(organs[1, 2])}`
+
+#### Graph
+```{r fig.width=18, fig.height=6, fig.align='center'}
+if (!is.null(graphs)) {
+	graphs[[1]]
+}
+```
+
+#### Tabelle
+```{r}
+if (!is.null(organs)) {
+	report_tab_fu %>% 
+		filter(organ == pull(organs[1, 2])) %>% 
+		table_style()
+}
+```
+
+### `r if (!is.null(organs)) {pull(organs[2, 2])}`
+
+#### Graph
+```{r fig.width=18, fig.height=6, fig.align='center'}
+if (!is.null(graphs)) {
+	graphs[[2]]
+}
+```
+
+#### Tabelle
+```{r}
+if (!is.null(organs)) {
+	report_tab_fu %>% 
+		filter(organ == pull(organs[2, 2])) %>% 
+		table_style()
+}
+```
+
+### `r if (!is.null(organs)) {pull(organs[3, 2])}`
+
+#### Graph
+```{r fig.width=18, fig.height=6, fig.align='center'}
+if (!is.null(graphs)) {
+	graphs[[3]]
+}
+```
+
+#### Tabelle
+```{r}
+if (!is.null(organs)) {
+	report_tab_fu %>% 
+		filter(organ == pull(organs[3, 2])) %>% 
+		table_style()
+}
+```
+
+### `r if (!is.null(organs)) {pull(organs[4, 2])}`
+
+#### Graph
+```{r fig.width=18, fig.height=6, fig.align='center'}
+if (!is.null(graphs)) {
+	graphs[[4]]
+}
+```
+
+#### Tabelle
+```{r}
+if (!is.null(organs)) {
+	report_tab_fu %>% 
+		filter(organ == pull(organs[4, 2])) %>% 
+		table_style()
+}
+```
+
+### `r if (!is.null(organs)) {pull(organs[5, 2])}`
+
+#### Graph
+```{r fig.width=18, fig.height=6, fig.align='center'}
+if (!is.null(graphs)) {
+	graphs[[5]]
+}
+```
+
+#### Tabelle
+```{r}
+if (!is.null(organs)) {
+	report_tab_fu %>% 
+		filter(organ == pull(organs[5, 2])) %>% 
+		table_style()
+}
+```
+
+### `r if (!is.null(organs)) {pull(organs[6, 2])}`
+
+#### Graph
+```{r fig.width=18, fig.height=6, fig.align='center'}
+if (!is.null(graphs)) {
+	graphs[[6]]
+}
+```
+
+#### Tabelle
+```{r}
+if (!is.null(organs)) {
+	report_tab_fu %>% 
+		filter(organ == pull(organs[6, 2]))%>% 
+		table_style()
+}
+```
